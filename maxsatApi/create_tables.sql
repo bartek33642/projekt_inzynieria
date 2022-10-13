@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS Zones (
+	zoneId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	city TEXT,
+	cordX INTEGER,
+	cordY INTEGER,
+	freeLotsFactor REAL,
+	attractivenessFactor REAL
+);
