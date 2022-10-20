@@ -9,9 +9,9 @@ public class MaxsatApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MaxsatApiApplication.class, args);
-		DatabaseGenerator databaseGenerator = new DatabaseGenerator();
-		databaseGenerator.createDatabase();
-		databaseGenerator.createTables();
+		//DatabaseGenerator databaseGenerator = new DatabaseGenerator();
+		//databaseGenerator.createDatabase();
+		//databaseGenerator.createTables();
 	}
 
 }
