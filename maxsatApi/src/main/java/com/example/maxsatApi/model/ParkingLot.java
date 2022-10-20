@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Entity
 public class ParkingLot {
     @Id
-    public int parkingLotId;
+    public Integer parkingLotId;
     @Column(insertable = false, updatable = false)
-    public int zoneId;
+    public Integer zoneId;
     public boolean haveSpaceForHandicapped;
     public boolean isGuarded;
     public boolean isPaid;

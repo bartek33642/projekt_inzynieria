@@ -14,7 +14,7 @@ public class ZoneService {
         this.zoneRepository = zoneRepository;
     }
 
-    public Zone SaveZone(Zone zoneToSave) {
+    public Zone saveZone(Zone zoneToSave) {
         return zoneRepository.save(zoneToSave);
     }
 }
