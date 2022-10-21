@@ -6,6 +6,9 @@ import com.example.maxsatApi.service.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Seed {
 
     private  ZoneRepository zoneRepository;
@@ -16,12 +19,18 @@ public class Seed {
 
     public void seedData(){
         if (zoneRepository.count() == 0) {
-            for (int x = 0; x < 10; ++x) {
-                for (int y = 0; y < 10; ++y) {
-                    Zone zone = new Zone(x, y, Math.round((Math.random() * (0.99 - 0.01) + 0.01) * 100.0) / 100.0, Math.round((Math.random() * (0.99 - 0.01) + 0.01) * 100.0) / 100.0, Math.round((Math.random() * (0.99 - 0.01) + 0.01) * 100.0) / 100.0);
-                    zoneRepository.save(zone);
+            List<Zone> zones = new ArrayList<>();
+            int cordXWidth = 10;
+            int cordYWidth = 10;
+            double demandFactor = Math.round((Math.random() * (0.99 - 0.01) + 0.01) * 100.0) / 100.0;
+            double accessibilityFactor = Math.round((Math.random() * (0.99 - 0.01) + 0.01) * 100.0) / 100.0;
+            double attractivenessFactor = Math.round((Math.random() * (0.99 - 0.01) + 0.01) * 100.0) / 100.0;
+            for (int cordX = 0; cordX < cordXWidth; ++cordX) {
+                for (int cordY = 0; cordY < cordYWidth; ++cordY) {
+                    zones.add(new Zone(cordX, cordY, demandFactor, accessibilityFactor, attractivenessFactor));
                 }
             }
+            zoneRepository.saveAll(zones);
         }
     }
 }
