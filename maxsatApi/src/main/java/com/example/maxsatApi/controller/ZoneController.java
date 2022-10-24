@@ -25,4 +25,6 @@ public class ZoneController {
     public Optional<Zone> getZoneById(@PathVariable Integer id){
         return zoneRepository.findById(id);
     }
+
+    //TODO: Add DTOs
 }
