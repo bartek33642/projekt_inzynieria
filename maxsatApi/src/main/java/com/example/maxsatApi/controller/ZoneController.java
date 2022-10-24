@@ -1,13 +1,11 @@
 package com.example.maxsatApi.controller;
 
+import com.example.maxsatApi.dto.ParkingLotRequirementsDto;
 import com.example.maxsatApi.model.Zone;
 import com.example.maxsatApi.repository.ZoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -26,5 +24,10 @@ public class ZoneController {
         return zoneRepository.findById(id);
     }
 
+    @GetMapping(value = "/requiredzone")
+    public Zone getZoneById(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto){
+        //TODO: maxsat4j things
+        return new Zone();
+    }
     //TODO: Add DTOs
 }
