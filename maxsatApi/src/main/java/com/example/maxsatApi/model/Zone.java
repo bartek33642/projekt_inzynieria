@@ -8,7 +8,7 @@ import java.util.Set;
 public class Zone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "id_Sequence")
-    @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
+    @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ_ZONE")
     public int zoneId;
     public int cordX;
     public int cordY;

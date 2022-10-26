@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class ParkingLot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "id_Sequence")
-    @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
+    @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ_PARKING_LOT")
     public Integer parkingLotId;
     @Column(insertable = false, updatable = false)
     public Integer zoneId;

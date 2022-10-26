@@ -4,13 +4,8 @@ import com.example.maxsatApi.model.ParkingLot;
 import com.example.maxsatApi.model.Zone;
 import com.example.maxsatApi.repository.ParkingLotRepository;
 import com.example.maxsatApi.repository.ZoneRepository;
-import com.example.maxsatApi.service.ZoneService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -25,9 +20,8 @@ public class Seed {
 
 
     public void seedData(){
-        List<Zone> zones;
         if (zoneRepository.count() == 0) {
-            zones = new ArrayList<>();
+            List<Zone> zones = new ArrayList<>();
             Random random = new Random();
             int cordXWidth = 10;
             int cordYWidth = 10;
@@ -42,19 +36,25 @@ public class Seed {
             zoneRepository.saveAll(zones);
         }
         if (parkingLotRepository.count() == 0) {
-            Zone zone = ((List<Zone>) zoneRepository.findAll()).get(0);
-            List<ParkingLot> parkingLots = new ArrayList<>();
-            Random random = new Random();
-            boolean haveSpaceForHandicapped = random.nextBoolean();
-            boolean isGuarded = random.nextBoolean();
-            boolean isPaid = random.nextBoolean();
-            int freeSpaces = random.nextInt(10);
-            boolean isPrivate = random.nextBoolean();
-            boolean haveSpacesForElectrics = random.nextBoolean();
-            parkingLots.add(new ParkingLot(haveSpaceForHandicapped, isGuarded, isPaid, freeSpaces, isPrivate, haveSpacesForElectrics, zone));
-            parkingLotRepository.saveAll(parkingLots);
-
+            List<Zone> zones = (List<Zone>) zoneRepository.findAll();
+            for (int zoneIndex = 0; zoneIndex < zones.size(); ++zoneIndex) {
+                if (zones.get(zoneIndex).parkingLots.size() == 0) {
+                    List<ParkingLot> parkingLots = new ArrayList<>();
+                    Random random = new Random();
+                    int numberOfParkingLots = random.nextInt(4) + 1;
+                    for (int parkingIndex = 0; parkingIndex < numberOfParkingLots; ++parkingIndex) {
+                        Zone zone = ((List<Zone>) zoneRepository.findAll()).get(zoneIndex);
+                        boolean haveSpaceForHandicapped = random.nextBoolean();
+                        boolean isGuarded = random.nextBoolean();
+                        boolean isPaid = random.nextBoolean();
+                        int freeSpaces = random.nextInt(10);
+                        boolean isPrivate = random.nextBoolean();
+                        boolean haveSpacesForElectrics = random.nextBoolean();
+                        parkingLots.add(new ParkingLot(haveSpaceForHandicapped, isGuarded, isPaid, freeSpaces, isPrivate, haveSpacesForElectrics, zone));
+                    }
+                    parkingLotRepository.saveAll(parkingLots);
+                }
+            }
         }
-        Iterable<Zone> zones2 = zoneRepository.findAll();
     }
 }
