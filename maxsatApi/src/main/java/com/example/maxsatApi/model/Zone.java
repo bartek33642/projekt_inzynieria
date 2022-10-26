@@ -15,7 +15,7 @@ public class Zone {
     public double demandFactor;
     public double accessibilityFactor;
     public double attractivenessFactor;
-    @OneToMany(mappedBy = "zone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "zone", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public Set<ParkingLot> parkingLots;
 
     public Zone(int cordX, int cordY, double demandFactor, double accessibilityFactor, double attractivenessFactor) {

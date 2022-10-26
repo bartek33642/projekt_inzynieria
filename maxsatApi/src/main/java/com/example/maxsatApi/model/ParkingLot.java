@@ -1,7 +1,5 @@
 package com.example.maxsatApi.model;
 
-import org.hibernate.mapping.Set;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +16,7 @@ public class ParkingLot {
     public int freeSpaces;
     public boolean isPrivate;
     public boolean haveSpacesForElectrics;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "zoneId", nullable = false)
     public Zone zone;
 
