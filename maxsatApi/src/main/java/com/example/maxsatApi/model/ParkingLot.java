@@ -21,4 +21,18 @@ public class ParkingLot {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "zoneId", nullable = false)
     public Zone zone;
+
+    public ParkingLot(boolean haveSpaceForHandicapped, boolean isGuarded, boolean isPaid, int freeSpaces, boolean isPrivate, boolean haveSpacesForElectrics, Zone zone) {
+        this.haveSpaceForHandicapped = haveSpaceForHandicapped;
+        this.isGuarded = isGuarded;
+        this.isPaid = isPaid;
+        this.freeSpaces = freeSpaces;
+        this.isPrivate = isPrivate;
+        this.haveSpacesForElectrics = haveSpacesForElectrics;
+        this.zone = zone;
+    }
+
+    public ParkingLot() {
+
+    }
 }
