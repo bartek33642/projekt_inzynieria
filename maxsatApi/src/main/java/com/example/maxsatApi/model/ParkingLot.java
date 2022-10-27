@@ -3,6 +3,7 @@ package com.example.maxsatApi.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "parking_lot")
 public class ParkingLot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "id_Sequence")

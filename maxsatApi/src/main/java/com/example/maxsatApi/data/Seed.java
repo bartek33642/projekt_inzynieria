@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.System.in;
+
 public class Seed {
     private  ZoneRepository zoneRepository;
     private ParkingLotRepository parkingLotRepository;
@@ -20,6 +22,11 @@ public class Seed {
 
 
     public void seedData(){
+        generateZonesIfNotExists();
+        generateParkingLotsIfNotExists();
+    }
+
+    private void generateZonesIfNotExists() {
         if (zoneRepository.count() == 0) {
             List<Zone> zones = new ArrayList<>();
             Random random = new Random();
@@ -35,19 +42,22 @@ public class Seed {
             }
             zoneRepository.saveAll(zones);
         }
+    }
+
+    private void generateParkingLotsIfNotExists() {
         if (parkingLotRepository.count() == 0) {
             List<Zone> zones = (List<Zone>) zoneRepository.findAll();
-            for (int zoneIndex = 0; zoneIndex < zones.size(); ++zoneIndex) {
-                if (zones.get(zoneIndex).parkingLots.size() == 0) {
+            for (Zone zone : zones) {
+                if (zone.parkingLots.size() == 0) {
                     List<ParkingLot> parkingLots = new ArrayList<>();
                     Random random = new Random();
-                    int numberOfParkingLots = random.nextInt(4) + 1;
+                    int numberOfParkingLots = random.nextInt(1,5) ;
                     for (int parkingIndex = 0; parkingIndex < numberOfParkingLots; ++parkingIndex) {
-                        Zone zone = ((List<Zone>) zoneRepository.findAll()).get(zoneIndex);
                         boolean haveSpaceForHandicapped = random.nextBoolean();
                         boolean isGuarded = random.nextBoolean();
                         boolean isPaid = random.nextBoolean();
-                        int freeSpaces = random.nextInt(10);
+                        int maximalCountOfFreeSpaces = 10;
+                        int freeSpaces = random.nextInt(maximalCountOfFreeSpaces);
                         boolean isPrivate = random.nextBoolean();
                         boolean haveSpacesForElectrics = random.nextBoolean();
                         parkingLots.add(new ParkingLot(haveSpaceForHandicapped, isGuarded, isPaid, freeSpaces, isPrivate, haveSpacesForElectrics, zone));
