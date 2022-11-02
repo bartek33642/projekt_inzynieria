@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 @SpringBootApplication
 public class MaxsatApiApplication implements CommandLineRunner {
 
@@ -23,5 +25,6 @@ public class MaxsatApiApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		new Seed(zoneRepository, parkingLotRepository).seedData();
+		List<Zone> zoneList = (List<Zone>) zoneRepository.findAll();
 	}
 }
