@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+    <mapping>
+        <class-a>com.example.maxsatApi.model.Zone</class-a>
+        <class-b>com.example.maxsatApi.dto.ZoneDto</class-b>
+        <field relationship-type="non-cumulative">
+            <a>parkingLots</a>
+            <b>parkingLots</b>
+            <a-hint>com.example.maxsatApi.model.ParkingLot</a-hint>
+            <b-hint>com.example.maxsatApi.dto.ParkingLotDto</b-hint>
+        </field>
+    </mapping>
+    <mapping>
+        <class-a>com.example.maxsatApi.model.ParkingLot</class-a>
+        <class-b>com.example.maxsatApi.dto.ParkingLotDto</class-b>
+        <field>
+            <a>parkingLotId</a>
+            <b>parkingLotId</b>
+        </field>
+    </mapping>
+</mappings>
