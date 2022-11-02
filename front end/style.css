@@ -1,0 +1,33 @@
+.main {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.main .mainHeader {
+  width: 100%;
+}
+.main .mainHeader h1 {
+  font-size: 2vw;
+  text-align: center;
+}
+.main .formContainer {
+  width: 30vw;
+  margin: 5vw;
+}
+.main .formContainer h3 {
+  font-size: 1.2vw;
+}
+.main .mapContainer {
+  width: 40vw;
+}
+.main .mapContainer h2 {
+  font-size: 2vw;
+}
+.main .mapContainer canvas {
+  border: solid 2px;
+}
+.main .submitButton {
+  align-self: flex-end;
+  justify-content: center;
+}/*# sourceMappingURL=style.css.map */
