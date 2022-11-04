@@ -23,11 +23,11 @@ public class Seed {
         if (zoneRepository.count() == 0) {
             List<Zone> zones = new ArrayList<>();
             Random random = new Random();
-            int cordXWidth = 10;
-            int cordYWidth = 10;
-            for (int cordX = 0; cordX < cordXWidth; ++cordX) {
-                for (int cordY = 0; cordY < cordYWidth; ++cordY) {
-                    if ((cordY == 0 && cordX >= 1 && cordX <= 7) || (cordY == 1 && cordX <= 8) || (cordY == 2 && cordX <= 8) || (cordY == 3 && cordX >= 2 && cordX <= 7) || (cordY == 4 && cordX >= 2 && cordX <= 6) || (cordY == 5 && cordX ==2)) {
+            int cordXWidth = 8;
+            int cordYWidth = 5;
+            for (int cordX = 0; cordX <= cordXWidth; ++cordX) {
+                for (int cordY = 0; cordY <= cordYWidth; ++cordY) {
+                    if ((cordY == 0 && cordX >= 1 && cordX <= 7) || cordY == 1 || cordY == 2 || (cordY == 3 && cordX >= 2 && cordX <= 7) || (cordY == 4 && cordX >= 2 && cordX <= 6) || (cordY == 5 && cordX ==2)) {
                         double demandFactor = random.nextInt(100) / 100.0;
                         double accessibilityFactor = random.nextInt(100) / 100.0;
                         double attractivenessFactor = random.nextInt(100) / 100.0;
