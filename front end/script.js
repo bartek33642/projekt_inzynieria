@@ -11,10 +11,26 @@ mapCanvas.canvas.height = mapHeight;
 let backgroundCityImage = new Image(mapWidth, mapHeight)
 backgroundCityImage.src = "images/tarnów.png"
 
-// backgroundCityImage.onload = () => 
-//     mapCanvas.drawImage(backgroundCityImage, 0, 0)
+backgroundCityImage.onload = () =>
+    mapCanvas.drawImage(backgroundCityImage, 0, 0)
 
+// fetch('http://localhost:8081/zones', {
+//     method: 'GET',
+//     headers: {
+//         'Accept': 'application/json',
+//     },
+// })
+let headers = new Headers();
+headers.append('Access-Control-Allow-Origin', 'http://localhost:8081');
+headers.append('Access-Control-Allow-Credentials', 'true');
 
+const Http = new XMLHttpRequest();
+Http.open('GET', 'http://localhost:8081/zones');
+Http.send();
+
+Http.onreadystatechange = (e) => {
+    console.log(Http.responseText)
+}
 
 
 drawHexagon = (posX, posY, size, borderColor = "#000000", isFilled = false, fillColor = "#ffffff") => {
@@ -46,7 +62,7 @@ drawHexagon = (posX, posY, size, borderColor = "#000000", isFilled = false, fill
     }
 }
 
-drawHexagon(100, 100, 150, '#007074', 1, '#ff0000');
+drawHexagon(100, 100, 150, '#007074', 1, '#ad1a1a');
 
 
 
