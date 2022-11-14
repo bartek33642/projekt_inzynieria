@@ -33,6 +33,7 @@ canvasElement.addEventListener("click", (e) =>{
     let {x,y} = getMousePositionFromCanvas(e);
     let idOfClickedZone = getIdOfClickedZone(x, y, listOfZonesCoordinates);
     console.log(idOfClickedZone);
+    console.log(Zones[idOfClickedZone-1].cordX + " / " + Zones[idOfClickedZone-1].cordY);
 });
 //end of "main"
 
