@@ -27,8 +27,8 @@ public class Solver {
             maxSatSolver.addSoftClause(35, new VecInt(new int[]{8}));
             maxSatSolver.addSoftClause(30, new VecInt(new int[]{13}));
         } else {
-            maxSatSolver.addSoftClause(35, new VecInt(new int[]{-8}));
-            maxSatSolver.addSoftClause(35, new VecInt(new int[]{-11,9}));
+            maxSatSolver.addSoftClause(30, new VecInt(new int[]{-8}));
+            maxSatSolver.addSoftClause(20, new VecInt(new int[]{-11,9}));
         }
         if (requirementsDto.isPrivate = true) {
             maxSatSolver.addSoftClause(30, new VecInt(new int[]{9}));
