@@ -20,6 +20,7 @@ public class ParkingLot {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "zoneId", nullable = false)
     public Zone zone;
+    public int countOfPicks;
 
     public ParkingLot(boolean haveSpaceForHandicapped, boolean isGuarded, boolean isPaid, int freeSpaces, boolean isPrivate, boolean haveSpacesForElectrics, Zone zone) {
         this.haveSpaceForHandicapped = haveSpaceForHandicapped;
@@ -105,5 +106,13 @@ public class ParkingLot {
 
     public void setZone(Zone zone) {
         this.zone = zone;
+    }
+
+    public int getCountOfPicks() {
+        return countOfPicks;
+    }
+
+    public void setCountOfPicks(int countOfPicks) {
+        this.countOfPicks = countOfPicks;
     }
 }

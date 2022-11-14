@@ -77,12 +77,4 @@ public class Zone {
     public void setAttractivenessFactor(double attractivenessFactor) {
         this.attractivenessFactor = attractivenessFactor;
     }
-
-    public Set<ParkingLot> getParkingLots() {
-        return parkingLots;
-    }
-
-    public void setParkingLots(Set<ParkingLot> parkingLots) {
-        this.parkingLots = parkingLots;
-    }
 }
