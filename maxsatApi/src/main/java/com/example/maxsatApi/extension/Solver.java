@@ -38,5 +38,37 @@ public class Solver {
             maxSatSolver.addSoftClause(25, new VecInt(new int[]{-9}));
             maxSatSolver.addSoftClause(20, new VecInt(new int[]{-13,-11}));
         }
+        if (requirementsDto.isPaid = true) {
+            maxSatSolver.addSoftClause(20, new VecInt(new int[]{10}));
+            maxSatSolver.addSoftClause(15, new VecInt(new int[]{11}));
+            maxSatSolver.addSoftClause(10, new VecInt(new int[]{9}));
+        } else {
+            maxSatSolver.addSoftClause(30, new VecInt(new int[]{-10}));
+            maxSatSolver.addSoftClause(15, new VecInt(new int[]{-13, -11}));
+        }
+        if (requirementsDto.isGuarded = true) {
+            maxSatSolver.addSoftClause(30, new VecInt(new int[]{11}));
+            maxSatSolver.addSoftClause(25, new VecInt(new int[]{9}));
+            maxSatSolver.addSoftClause(10, new VecInt(new int[]{10}));
+        } else {
+            maxSatSolver.addSoftClause(20, new VecInt(new int[]{-11}));
+            maxSatSolver.addSoftClause(15, new VecInt(new int[]{-13, -9}));
+        }
+        if (requirementsDto.haveSpacesForElectrics = true) {
+            maxSatSolver.addSoftClause(30, new VecInt(new int[]{12}));
+            maxSatSolver.addSoftClause(25, new VecInt(new int[]{13}));
+        } else {
+            maxSatSolver.addSoftClause(20, new VecInt(new int[]{-12}));
+            maxSatSolver.addSoftClause(15, new VecInt(new int[]{9, 10, -13}));
+        }
+        if (requirementsDto.atLeast15FreePlaces = true) {
+            maxSatSolver.addSoftClause(15, new VecInt(new int[]{13}));
+            maxSatSolver.addSoftClause(10, new VecInt(new int[]{10, 11, 9}));
+        } else {
+            maxSatSolver.addSoftClause(30, new VecInt(new int[]{-13}));
+        }
+//        if (requirementsDto.) {
+//            maxSatSolver.addSoftClause(25, new VecInt(new int[]{14}));
+//        }
     }
 }
