@@ -9,14 +9,14 @@ public class Zone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "id_Sequence")
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ_ZONE")
-    public int zoneId;
-    public int cordX;
-    public int cordY;
-    public double demandFactor;
-    public double accessibilityFactor;
-    public double attractivenessFactor;
+    private int zoneId;
+    private int cordX;
+    private int cordY;
+    private double demandFactor;
+    private double accessibilityFactor;
+    private double attractivenessFactor;
     @OneToMany(mappedBy = "zone", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public Set<ParkingLot> parkingLots;
+    private Set<ParkingLot> parkingLots;
 
     public Zone(int cordX, int cordY, double demandFactor, double accessibilityFactor, double attractivenessFactor) {
         this.cordX = cordX;
@@ -28,6 +28,14 @@ public class Zone {
 
     public Zone() {
 
+    }
+
+    public Set<ParkingLot> getParkingLots() {
+        return parkingLots;
+    }
+
+    public void setParkingLots(Set<ParkingLot> parkingLots) {
+        this.parkingLots = parkingLots;
     }
 
     public int getZoneId() {

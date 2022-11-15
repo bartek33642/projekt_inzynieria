@@ -50,7 +50,7 @@ public class Seed {
         if (parkingLotRepository.count() == 0) {
             List<Zone> zones = (List<Zone>) zoneRepository.findAll();
             for (Zone zone : zones) {
-                if (zone.parkingLots.size() == 0) {
+                if (zone.getParkingLots().size() == 0) {
                     List<ParkingLot> parkingLots = new ArrayList<>();
                     Random random = new Random();
                     int numberOfParkingLots = random.nextInt(1,5) ;
