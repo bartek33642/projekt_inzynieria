@@ -12,6 +12,7 @@ Zmienne zadaniowe:
 – Z11 - parking jest strzezony
 - Z12 - parking ma miejsca dla aut elektrycznych
 – Z13 - na parkingu jest przynajmniej 10 wolnych miejsc parkingowych
+- Z14 - parking jest wśród trzech ulubionych klienta
 
 Klauzule:
 – K0 - solver ma wybrać najkorzystniejszą strefę, w której ma znajdowac się rekomendowany parking
@@ -28,6 +29,7 @@ Klauzule:
 – K11 - Klient preferuje parkingi strzezone
 - K12 - Klient preferuje parkingi z miejscami dla aut elektrycznych
 – K13 - Klient preferuje parkingi z wieloma wolnymi miejscami
+- Z14 - solver ma wybierać ten parking
 
 wzór na obliczanie wag od K1 do K7:
 weight = Math.round((demandFactor + accessibilityFactor + attractivenessFactor) / 0.03)
@@ -53,3 +55,4 @@ Budowanie klauzul ze zmiennych zadaniowych:
 – ¬K12 → ¬Z12 ∧ (Z9 ∨ Z10 ∨ ¬Z13) (20, 15)
 – K13 → Z13 ∧ (Z10 ∧ Z11 ∧ Z9) (15, 10)
 – ¬K13 → ¬Z13 (30)
+– K14 → K14 (25)
