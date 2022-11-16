@@ -30,4 +30,31 @@
 .main .submitButton {
   align-self: flex-end;
   justify-content: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+.container .header {
+  width: 100%;
+}
+.container .header .h1 {
+  text-align: center;
+}
+.container .headerTwo {
+  width: 100%;
+  text-align: center;
+}
+.container table {
+  border-spacing: 0;
+}
+.container table #headerTable {
+  background-color: #cccccc;
+}
+.container table tr td {
+  border: 0.5px solid black;
 }/*# sourceMappingURL=style.css.map */

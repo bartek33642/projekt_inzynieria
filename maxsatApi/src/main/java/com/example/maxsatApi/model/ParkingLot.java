@@ -8,18 +8,19 @@ public class ParkingLot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "id_Sequence")
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ_PARKING_LOT")
-    public Integer parkingLotId;
+    private Integer parkingLotId;
     @Column(insertable = false, updatable = false)
-    public Integer zoneId;
-    public boolean haveSpaceForHandicapped;
-    public boolean isGuarded;
-    public boolean isPaid;
-    public int freeSpaces;
-    public boolean isPrivate;
-    public boolean haveSpacesForElectrics;
+    private Integer zoneId;
+    private boolean haveSpaceForHandicapped;
+    private boolean isGuarded;
+    private boolean isPaid;
+    private int freeSpaces;
+    private boolean isPrivate;
+    private boolean haveSpacesForElectrics;
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "zoneId", nullable = false)
-    public Zone zone;
+    private Zone zone;
+    private int points;
 
     public ParkingLot(boolean haveSpaceForHandicapped, boolean isGuarded, boolean isPaid, int freeSpaces, boolean isPrivate, boolean haveSpacesForElectrics, Zone zone) {
         this.haveSpaceForHandicapped = haveSpaceForHandicapped;
@@ -51,7 +52,7 @@ public class ParkingLot {
         this.zoneId = zoneId;
     }
 
-    public boolean isHaveSpaceForHandicapped() {
+    public boolean getHaveSpaceForHandicapped() {
         return haveSpaceForHandicapped;
     }
 
@@ -105,5 +106,13 @@ public class ParkingLot {
 
     public void setZone(Zone zone) {
         this.zone = zone;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int countOfPicks) {
+        this.points = countOfPicks;
     }
 }

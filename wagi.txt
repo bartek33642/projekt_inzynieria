@@ -1,0 +1,58 @@
+Zmienne zadaniowe: 
+– Z1 - parking znajduje się w strefie nr 1
+– Z2 - parking znajduje się w strefie nr 2
+– Z3 - parking znajduje się w strefie nr 3
+– Z4 - parking znajduje się w strefie nr 4
+– Z5 - parking znajduje się w strefie nr 5
+– Z6 - parking znajduje się w strefie nr 6
+– Z7 - parking znajduje się w strefie nr 7
+– Z8 - parking posiada miejsca dla niepełnosprawnych
+- Z9 - parking jest prywatny
+– Z10 - parking jest płatny
+– Z11 - parking jest strzezony
+- Z12 - parking ma miejsca dla aut elektrycznych
+– Z13 - na parkingu jest przynajmniej 10 wolnych miejsc parkingowych
+- Z14 - parking jest wśród trzech ulubionych klienta
+
+Klauzule:
+– K0 - solver ma wybrać najkorzystniejszą strefę, w której ma znajdowac się rekomendowany parking
+– K1 - solver ma nie wybierać strefy nr 1
+– K2 - solver ma nie wybierać strefy nr 2
+– K3 - solver ma nie wybierać strefy nr 3
+– K4 - solver ma nie wybierać strefy nr 4
+– K5 - solver ma nie wybierać strefy nr 5
+– K6 - solver ma nie wybierać strefy nr 6
+– K7 - solver ma nie wybierać strefy nr 7
+– K8 - Klient preferuje parkingi z miejscami dla osób niepełnosprawych
+- K9 - Klient preferuje parkingi prywatne
+– K10 - Klient preferuje parkingi płatne
+– K11 - Klient preferuje parkingi strzezone
+- K12 - Klient preferuje parkingi z miejscami dla aut elektrycznych
+– K13 - Klient preferuje parkingi z wieloma wolnymi miejscami
+- Z14 - solver ma wybierać ten parking
+
+wzór na obliczanie wag od K1 do K7:
+weight = Math.round((demandFactor + accessibilityFactor + attractivenessFactor) / 0.03)
+
+Budowanie klauzul ze zmiennych zadaniowych:
+– K0 → Z1 ∨ Z2 ∨ Z3 ∨ Z4 ∨ Z5 ∨ Z6 ∨ Z7 (10000)
+– K1 → ¬Z1 (priorytet strefy nr 1)
+– K2 → ¬Z2 (priorytet strefy nr 2)
+– K3 → ¬Z3 (priorytet strefy nr 3)
+– K4 → ¬Z4 (priorytet strefy nr 4)
+– K5 → ¬Z5 (priorytet strefy nr 5)
+– K6 → ¬Z6 (priorytet strefy nr 6)
+– K7 → ¬Z7 (priorytet strefy nr 7)
+– K8 → Z8 ∧ Z13 (35 , 30) 
+– ¬K8 → ¬Z8 ∧ (¬Z11 ∨ Z9 ) (30, 20)
+– K9 → Z9 ∧ Z11 ∧ Z10 (30, 25, 10)
+– ¬K9 → ¬Z9 ∧ (¬Z13 ∨ ¬Z11) (25, 20, 15)
+– K10 → Z10 ∧ Z11 ∧ Z9  (20, 15, 10)
+– ¬K10 → ¬Z10 ∧ (¬Z13 ∨ ¬Z11) (30, 15)
+– K11 → Z11 ∧ Z9 ∧ Z10 (30, 25, 10)
+– ¬K11 → ¬Z11 ∧ (¬Z13 ∨ ¬Z9) (20, 15)
+– K12 → Z12 ∧ Z13 (30, 25)
+– ¬K12 → ¬Z12 ∧ (Z9 ∨ Z10 ∨ ¬Z13) (20, 15)
+– K13 → Z13 ∧ (Z10 ∧ Z11 ∧ Z9) (15, 10)
+– ¬K13 → ¬Z13 (30)
+– K14 → K14 (25)

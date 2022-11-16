@@ -25,6 +25,5 @@ public class MaxsatApiApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		new Seed(zoneRepository, parkingLotRepository).seedData();
-		List<Zone> zoneList = (List<Zone>) zoneRepository.findAll();
 	}
 }
