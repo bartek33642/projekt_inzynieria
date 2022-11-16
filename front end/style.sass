@@ -3,7 +3,6 @@
     
 .main
     display: flex
-    align-items: center
     flex-wrap: wrap
 
 
@@ -28,18 +27,31 @@
 
     .mapContainer
         width: 40vw
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
 
         h2
             font-size: 2vw
-        canvas
-            border: solid 2px
-            // width: 40vw
-            // height: 25vw
-            // canvas size is set in .js file
-        
+
+        .canvasContainer
+            display: flex
+            justify-content: flex-start
+            align-items: flex-start
+
+            canvas
+                border: solid 2px
+                position: absolute
+                z-index: 2
+                // canvas size is set in .js file
+
+            #cityImage
+                position: absolute
+                z-index: 1
 
 
-    .submitButton
+    #submitButton
         align-self: flex-end
         justify-content: center
 
