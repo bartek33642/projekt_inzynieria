@@ -29,18 +29,40 @@ public class Solver {
     private void setSelectedZones(List<Zone> allZones, ParkingLotRequirementsDto requirementsDto) throws Exception {
         int requiredParkingLotZoneCordX = requirementsDto.getZoneCordX();
         int requiredParkingLotZoneCordY = requirementsDto.getZoneCordY();
-        List<Zone> selectedZones = allZones.stream().filter(
-                x -> x.getCordX() >= requiredParkingLotZoneCordX - 1 &&
-                        x.getCordX() <= requiredParkingLotZoneCordX + 1 &&
-                        x.getCordY() >= requiredParkingLotZoneCordY - 1 &&
-                        x.getCordY() <= requiredParkingLotZoneCordY + 1).toList();
+        List<Zone> selectedZones = allZones.stream().filter( z -> isNeighbourHexagon(
+                z, requiredParkingLotZoneCordX, requiredParkingLotZoneCordY
+        )).toList();
         zoneWithRequiredCords = selectedZones.stream().filter(
                 x -> x.getCordX() == requiredParkingLotZoneCordX &&
                         x.getCordY() == requiredParkingLotZoneCordY
         ).findFirst().orElse(null);
         this.selectedZones = selectedZones;
     }
-
+    private boolean isNeighbourHexagon(Zone zone, int cordX, int cordY){
+        int cordYDifference = zone.getCordY() - cordY;
+        int cordXDifference = zone.getCordX() - cordX;
+        boolean isNeighbourOnYAxis = cordXDifference == 0
+                && Math.abs(zone.getCordY() - cordY) <= 1;
+        if (isNeighbourOnYAxis) return true;
+        return
+                Math.abs(cordXDifference) == 1
+                        && (cordYDifference == 0 ||
+                        (cordX % 2 == 1 ?
+                            cordYDifference == 1
+                            :
+                            cordYDifference == -1));
+//        boolean haveCloseXCoordinates = (
+//                zone.getCordX() >= cordX - 1 &&
+//                zone.getCordX() <= cordX + 1);
+//        if (!haveCloseXCoordinates)
+//            return false;
+//        return cordX % 2 == 0 ?
+//                zone.getCordY() >= cordY - 1 &&
+//                        (zone.getCordY() <= cordY || zone.getCordX() == cordX && zone.getCordY() ==)
+//                :
+//                zone.getCordY() <= cordY + 1 &&
+//                        (zone.getCordY() >= cordY || zone.getCordX() == cordX);
+    }
     private void setResult(ParkingLotRequirementsDto requirementsDto) throws ContradictionException {
         final int MAX_VAR = 14;
         final int NUMBER_OF_CLAUSES = selectedZones.size()+9;
@@ -52,6 +74,7 @@ public class Solver {
         solver.setExpectedNumberOfClauses(NUMBER_OF_CLAUSES);
         for (int literal = 1; literal < 8; literal++){
             int indexOfZone = literal - 1;
+            //TODO: rozwiązać problem index out of bound przy liczbie sąsiadów mniejszej od 7
             int zoneId = selectedZonesIds.get(indexOfZone);
             if (zoneId == zoneWithRequiredCords.getZoneId())
                 maxSatSolver.addSoftClause(new VecInt(new int[]{literal}));
@@ -117,7 +140,6 @@ public class Solver {
     }
 
     public int test(ParkingLot parkingLot) {
-        //TODO: przeanalizować i przerobić metodę
         int score = 0;
         int selectedZoneId = parkingLot.getZoneId();
         int indexOfSelectedZoneId = selectedZonesIds.indexOf(selectedZoneId);
