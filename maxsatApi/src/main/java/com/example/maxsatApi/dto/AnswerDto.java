@@ -1,37 +1,27 @@
 package com.example.maxsatApi.dto;
 
 public class AnswerDto {
-    private ParkingLotDto firstParkingLot;
-    private ParkingLotDto secondParkingLot;
-    private ParkingLotDto thirdParkingLot;
+    private int parkingLotId;
+    private int score;
 
-    public AnswerDto(ParkingLotDto firstParkingLot, ParkingLotDto secondParkingLot, ParkingLotDto thirdParkingLot) {
-        this.firstParkingLot = firstParkingLot;
-        this.secondParkingLot = secondParkingLot;
-        this.thirdParkingLot = thirdParkingLot;
+    public int getParkingLotId() {
+        return parkingLotId;
     }
 
-    public ParkingLotDto getFirstParkingLot() {
-        return firstParkingLot;
+    public void setParkingLotId(int parkingLotId) {
+        this.parkingLotId = parkingLotId;
     }
 
-    public void setFirstParkingLot(ParkingLotDto firstParkingLot) {
-        this.firstParkingLot = firstParkingLot;
+    public int getScore() {
+        return score;
     }
 
-    public ParkingLotDto getSecondParkingLot() {
-        return secondParkingLot;
+    public void setScore(int score) {
+        this.score = score;
     }
 
-    public void setSecondParkingLot(ParkingLotDto secondParkingLot) {
-        this.secondParkingLot = secondParkingLot;
-    }
-
-    public ParkingLotDto getThirdParkingLot() {
-        return thirdParkingLot;
-    }
-
-    public void setThirdParkingLot(ParkingLotDto thirdParkingLot) {
-        this.thirdParkingLot = thirdParkingLot;
+    public AnswerDto(int parkingLotId, int score) {
+        this.parkingLotId = parkingLotId;
+        this.score = score;
     }
 }

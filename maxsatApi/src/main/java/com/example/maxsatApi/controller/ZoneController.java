@@ -44,8 +44,8 @@ public class ZoneController {
     }
 
     @GetMapping(value = "/requiredparkinglot")
-    public ResponseEntity<AnswerDto> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
-        AnswerDto answerDto = parkingLotService.getRequiredParkingLots(parkingLotRequirementsDto);
+    public ResponseEntity<List<AnswerDto>> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
+        List<AnswerDto> answerDto = parkingLotService.getRequiredParkingLots(parkingLotRequirementsDto);
         return new ResponseEntity<>(answerDto, HttpStatus.OK);
     }
 }
