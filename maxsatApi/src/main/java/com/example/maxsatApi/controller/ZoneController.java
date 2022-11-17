@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(maxAge = 3600)
 public class ZoneController {
 
     public final ZoneRepository zoneRepository;
@@ -43,9 +43,9 @@ public class ZoneController {
         return zoneService.getZone(id);
     }
 
-    @GetMapping(value = "/requiredparkinglot")
-    public ResponseEntity<List<AnswerDto>> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
-        List<AnswerDto> answerDto = parkingLotService.getRequiredParkingLots(parkingLotRequirementsDto);
+    @PostMapping (value = "/requiredparkinglot")
+    public ResponseEntity<AnswerDto> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
+        AnswerDto answerDto = parkingLotService.getRequiredParkingLots(parkingLotRequirementsDto);
         return new ResponseEntity<>(answerDto, HttpStatus.OK);
     }
 }

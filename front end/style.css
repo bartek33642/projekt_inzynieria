@@ -1,6 +1,5 @@
 .main {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -20,14 +19,29 @@
 }
 .main .mapContainer {
   width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .main .mapContainer h2 {
   font-size: 2vw;
 }
-.main .mapContainer canvas {
-  border: solid 2px;
+.main .mapContainer .canvasContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
-.main .submitButton {
+.main .mapContainer .canvasContainer canvas {
+  border: solid 2px;
+  position: absolute;
+  z-index: 2;
+}
+.main .mapContainer .canvasContainer #cityImage {
+  position: absolute;
+  z-index: 1;
+}
+.main #submitButton {
   align-self: flex-end;
   justify-content: center;
 }
@@ -57,4 +71,6 @@
 }
 .container table tr td {
   border: 0.5px solid black;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */
