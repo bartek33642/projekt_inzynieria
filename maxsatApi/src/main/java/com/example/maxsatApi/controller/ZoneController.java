@@ -43,7 +43,7 @@ public class ZoneController {
         return zoneService.getZone(id);
     }
 
-    @GetMapping(value = "/requiredparkinglot")
+    @PostMapping (value = "/requiredparkinglot")
     public ResponseEntity<AnswerDto> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
         AnswerDto answerDto = parkingLotService.getRequiredParkingLots(parkingLotRequirementsDto);
         return new ResponseEntity<>(answerDto, HttpStatus.OK);

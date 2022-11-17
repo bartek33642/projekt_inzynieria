@@ -16,7 +16,7 @@ const Http = new XMLHttpRequest();
 Http.open('GET', 'http://localhost:8081/zones');
 Http.send();
 
-let Zones;
+let Zones = [];
 let listOfZonesCoordinates;
 
 let selectedZoneData = {
@@ -38,35 +38,29 @@ canvasElement.addEventListener("click", (e) =>{
     setSelectedZoneInfo(idOfClickedZone);
     drawNetOfHexagons(listOfZonesCoordinates);
 });
-
 //send form and
 document.querySelector('#submitButton').addEventListener('click', ()=>{
-
-
-    let xhr = new XMLHttpRequest();
-    let url = "http://localhost:8081/requiredzone?data=" + encodeURIComponent(JSON.stringify(
-        {
-            "heaveSpaceForHandicapped": document.getElementsByName('form-disabledParking')[0].checked,
-            "isGuarded": document.getElementsByName('form-guardedParking')[0].checked,
-            "isPaid": document.getElementsByName('form-paidParking')[0].checked,
-            "atLeast15FreePlaces": document.getElementsByName('form-hugeParking')[0].checked,
-            "isPrivate": document.getElementsByName('form-privateParking')[0].checked,
-            "haveSpacesForElectrics": document.getElementsByName('form-electricCarParking')[0].checked,
-            "ZoneCordX": selectedZoneData.x,
-            "ZoneCordY": selectedZoneData.y,
-
-        }
-    ));
-    console.log(url);
-    xhr.open("GET", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            let json = JSON.parse(xhr.responseText);
-            console.log(json.email + ", " + json.password);
-        }
+    let dataToSend = {
+        haveSpaceForHandicapped: document.getElementsByName('form-disabledParking')[0].checked,
+        isGuarded: document.getElementsByName('form-guardedParking')[0].checked,
+        isPaid: document.getElementsByName('form-paidParking')[0].checked,
+        atLeast15FreePlaces: document.getElementsByName('form-hugeParking')[0].checked,
+        isPrivate: document.getElementsByName('form-privateParking')[0].checked,
+        haveSpacesForElectrics: document.getElementsByName('form-electricCarParking')[0].checked,
+        zoneCordX: selectedZoneData.x,
+        zoneCordY: selectedZoneData.y,
     };
-    xhr.send();
+    let dataToSendAsJson = JSON.stringify(dataToSend);
+    let xhr = new XMLHttpRequest();
+    let url = "http://localhost:8081/requiredparkinglot";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(dataToSendAsJson);
+    xhr.onreadystatechange = (e) => {
+        results = JSON.parse(xhr.responseText);
+        console.log(results)
+    }
+
 })
 
 //end of "main"
