@@ -51,28 +51,18 @@ public class Solver {
                             cordYDifference == 1
                             :
                             cordYDifference == -1));
-//        boolean haveCloseXCoordinates = (
-//                zone.getCordX() >= cordX - 1 &&
-//                zone.getCordX() <= cordX + 1);
-//        if (!haveCloseXCoordinates)
-//            return false;
-//        return cordX % 2 == 0 ?
-//                zone.getCordY() >= cordY - 1 &&
-//                        (zone.getCordY() <= cordY || zone.getCordX() == cordX && zone.getCordY() ==)
-//                :
-//                zone.getCordY() <= cordY + 1 &&
-//                        (zone.getCordY() >= cordY || zone.getCordX() == cordX);
     }
     private void setResult(ParkingLotRequirementsDto requirementsDto) throws ContradictionException {
+        final int SELECTED_ZONES_SIZE = selectedZones.size();
         final int MAX_VAR = 14;
-        final int NUMBER_OF_CLAUSES = selectedZones.size()+9;
+        final int NUMBER_OF_CLAUSES = SELECTED_ZONES_SIZE+9;
         WeightedMaxSatDecorator maxSatSolver = new
                 WeightedMaxSatDecorator(SolverFactory.newDefault());
         ModelIterator solver = new ModelIterator(
                 new OptToSatAdapter(new PseudoOptDecorator(maxSatSolver)));
         solver.newVar(MAX_VAR);
         solver.setExpectedNumberOfClauses(NUMBER_OF_CLAUSES);
-        for (int literal = 1; literal < 8; literal++){
+        for (int literal = 1; literal < SELECTED_ZONES_SIZE; literal++){
             int indexOfZone = literal - 1;
             //TODO: rozwiązać problem index out of bound przy liczbie sąsiadów mniejszej od 7
             int zoneId = selectedZonesIds.get(indexOfZone);
