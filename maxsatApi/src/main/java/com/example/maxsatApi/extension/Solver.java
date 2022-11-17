@@ -1,8 +1,10 @@
 package com.example.maxsatApi.extension;
 
 import com.example.maxsatApi.dto.ParkingLotRequirementsDto;
+import com.example.maxsatApi.dto.ParkingLotWithScore;
 import com.example.maxsatApi.model.ParkingLot;
 import com.example.maxsatApi.model.Zone;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import org.sat4j.core.VecInt;
 import org.sat4j.maxsat.SolverFactory;
 import org.sat4j.maxsat.WeightedMaxSatDecorator;
@@ -11,32 +13,30 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.tools.ModelIterator;
 import org.sat4j.tools.OptToSatAdapter;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 public class Solver {
     private List<Integer> result;
     private List<Zone> selectedZones;
     List<Integer> selectedZonesIds;
-    Zone zoneWithRequiredCords;
+    Zone mostNeededZone;
     List<Integer> preferredParkingLotIds;
     public Solver(List<Zone> allZones, ParkingLotRequirementsDto requirementsDto, List<ParkingLot> preferredParkingLots) throws Exception {
         this.preferredParkingLotIds = preferredParkingLots.stream().map(x -> x.getParkingLotId()).toList();
-        setSelectedZones(allZones, requirementsDto);
+        this.selectedZones = findSelectedZones(allZones, requirementsDto);
+        this.mostNeededZone = findMostNeededZone(selectedZones);
         this.selectedZonesIds = selectedZones.stream().map(x->x.getZoneId()).toList();
-        setResult(requirementsDto);
+        this.result = findResult(requirementsDto);
     }
 
-    private void setSelectedZones(List<Zone> allZones, ParkingLotRequirementsDto requirementsDto) throws Exception {
+    private List<Zone> findSelectedZones(List<Zone> allZones, ParkingLotRequirementsDto requirementsDto){
         int requiredParkingLotZoneCordX = requirementsDto.getZoneCordX();
         int requiredParkingLotZoneCordY = requirementsDto.getZoneCordY();
         List<Zone> selectedZones = allZones.stream().filter( z -> isNeighbourHexagon(
                 z, requiredParkingLotZoneCordX, requiredParkingLotZoneCordY
         )).toList();
-        zoneWithRequiredCords = selectedZones.stream().filter(
-                x -> x.getCordX() == requiredParkingLotZoneCordX &&
-                        x.getCordY() == requiredParkingLotZoneCordY
-        ).findFirst().orElse(null);
-        this.selectedZones = selectedZones;
+        return selectedZones;
     }
     private boolean isNeighbourHexagon(Zone zone, int cordX, int cordY){
         int cordYDifference = zone.getCordY() - cordY;
@@ -52,7 +52,7 @@ public class Solver {
                             :
                             cordYDifference == -1));
     }
-    private void setResult(ParkingLotRequirementsDto requirementsDto) throws ContradictionException {
+    private List<Integer> findResult(ParkingLotRequirementsDto requirementsDto) throws ContradictionException {
         final int SELECTED_ZONES_SIZE = selectedZones.size();
         final int MAX_VAR = 14;
         final int NUMBER_OF_CLAUSES = SELECTED_ZONES_SIZE+9;
@@ -62,11 +62,10 @@ public class Solver {
                 new OptToSatAdapter(new PseudoOptDecorator(maxSatSolver)));
         solver.newVar(MAX_VAR);
         solver.setExpectedNumberOfClauses(NUMBER_OF_CLAUSES);
-        for (int literal = 1; literal < SELECTED_ZONES_SIZE; literal++){
+        for (int literal = 1; literal < SELECTED_ZONES_SIZE+1; literal++){
             int indexOfZone = literal - 1;
-            //TODO: rozwiązać problem index out of bound przy liczbie sąsiadów mniejszej od 7
             int zoneId = selectedZonesIds.get(indexOfZone);
-            if (zoneId == zoneWithRequiredCords.getZoneId())
+            if (zoneId == mostNeededZone.getZoneId())
                 maxSatSolver.addSoftClause(new VecInt(new int[]{literal}));
             else
                 maxSatSolver.addSoftClause(new VecInt(new int[]{0-literal}));
@@ -119,21 +118,49 @@ public class Solver {
         try {
             if (solver.isSatisfiable()){
                 int [] model = solver.model();
-                result = Arrays.stream(model).boxed().toList();
+                return Arrays.stream(model).boxed().toList();
 
             }else{
                 throw new Exception("Unsatisfiable formula");
             }
         } catch (Exception e){
             e.printStackTrace();
+            return null;
         }
     }
+    private Zone findMostNeededZone(List<Zone> zones){
+        double maxWeight = 0;
+        Zone mostNeededZone = new Zone();
+        for (Zone zone : zones) {
+            double weight = calculateWeightOfZone(zone);
+            if (weight > maxWeight) {
+                mostNeededZone = zone;
+                maxWeight = weight;
+            }
+        }
+        return mostNeededZone;
+    }
 
+    private static long calculateWeightOfZone(Zone zone) {
+        return Math.round((zone.getDemandFactor() + zone.getAccessibilityFactor() + zone.getAttractivenessFactor()) / 0.03);
+    }
+
+    public List<ParkingLotWithScore> findTheBestParkingLotsWithScores(){
+        List<ParkingLot> selectedParkingLots = new ArrayList<>();
+        selectedZones.forEach(zone -> selectedParkingLots.addAll(zone.getParkingLots()));
+        List<ParkingLotWithScore> parkingLotsWithScores = new ArrayList<>();
+        selectedParkingLots.forEach(parkingLot ->
+                parkingLotsWithScores.add(new ParkingLotWithScore(
+                        parkingLot, test(parkingLot)
+                )));
+        parkingLotsWithScores.sort(Comparator.comparingInt(ParkingLotWithScore::getScore).reversed());
+        return parkingLotsWithScores.subList(0,3);
+    }
     public int test(ParkingLot parkingLot) {
         int score = 0;
-        int selectedZoneId = parkingLot.getZoneId();
-        int indexOfSelectedZoneId = selectedZonesIds.indexOf(selectedZoneId);
-        if (indexOfSelectedZoneId >(-1) && result.get(indexOfSelectedZoneId)>0)
+        int currentParkingLotZoneId = parkingLot.getZoneId();
+        int indexOfCurrentParkingLotZoneId = selectedZonesIds.indexOf(currentParkingLotZoneId);
+        if (indexOfCurrentParkingLotZoneId >(-1) && result.get(indexOfCurrentParkingLotZoneId)>0)
             score+=10;
         if (result.contains(8) && parkingLot.getHaveSpaceForHandicapped())
             score++;

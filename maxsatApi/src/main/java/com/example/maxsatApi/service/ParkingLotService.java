@@ -49,16 +49,8 @@ public class ParkingLotService {
     private List<ParkingLotWithScore> findTheBestParkingLotsWithScores(ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
         List<ParkingLot> preferredParkingLots = parkingLotRepository.findThreeParkingLotsWithMostPoints();
         List<Zone> allZones = (List<Zone>) zoneRepository.findAll();
-        List<ParkingLot> allParkingLots = (List<ParkingLot>) parkingLotRepository.findAll();
         Solver solver = new Solver(allZones, parkingLotRequirementsDto,preferredParkingLots);
-        List<ParkingLotWithScore> parkingLotsWithScores = new ArrayList<>();
-        allParkingLots.forEach(parkingLot ->
-                parkingLotsWithScores.add(new ParkingLotWithScore(
-                        parkingLot, solver.test(parkingLot)
-                )));
-        parkingLotsWithScores.sort(Comparator.comparingInt(ParkingLotWithScore::getScore).reversed());
-        List<ParkingLotWithScore> bestResults = parkingLotsWithScores.subList(0,3);
-        return bestResults;
+        return solver.findTheBestParkingLotsWithScores();
     }
 
     private void updateScoresOfBestParkingLots(ParkingLot firstParkingLot, ParkingLot secondParkingLot, ParkingLot thirdParkingLot){
