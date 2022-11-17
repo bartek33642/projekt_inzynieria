@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(maxAge = 3600)
 public class ZoneController {
 
     public final ZoneRepository zoneRepository;
