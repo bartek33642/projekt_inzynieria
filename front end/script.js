@@ -57,7 +57,7 @@ document.querySelector('#submitButton').addEventListener('click', ()=>{
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dataToSendAsJson);
     xhr.onreadystatechange = (e) => {
-        results = JSON.parse(xhr.responseText);
+        let results = JSON.parse(xhr.responseText);
         console.log(results)
     }
 
