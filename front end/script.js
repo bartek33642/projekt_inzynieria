@@ -1,5 +1,5 @@
 //setting up canvas element
-let canvasElement = document.getElementById('mapCanvas')
+let canvasElement = document.querySelector('#mapCanvas')
 let mapCanvas = canvasElement.getContext('2d');
 
 let mapWidth = window.innerWidth * (40/100)
@@ -8,19 +8,22 @@ let mapHeight = window.innerWidth * (25/100)
 mapCanvas.canvas.width  = mapWidth;
 mapCanvas.canvas.height = mapHeight;
 
-let backgroundCityImage = new Image(mapWidth, mapHeight)
-backgroundCityImage.src = "images/tarnów.png"
-//TODO: zmienić rozmiar mapy tarnowa w tle (nie wiem kurde jak to zrobić xd)
+document.querySelector("#cityImage").width = mapWidth;
+document.querySelector("#cityImage").height = mapHeight;
 
-backgroundCityImage.onload = () =>
-    mapCanvas.drawImage(backgroundCityImage, 0, 0)
 
 const Http = new XMLHttpRequest();
 Http.open('GET', 'http://localhost:8081/zones');
 Http.send();
 
-let Zones;
+let Zones = [];
 let listOfZonesCoordinates;
+
+let selectedZoneData = {
+    id:null,
+    x:null,
+    y:null
+};
 
 //async function called when JSON is received
 Http.onreadystatechange = (e) => {
@@ -32,9 +35,34 @@ Http.onreadystatechange = (e) => {
 canvasElement.addEventListener("click", (e) =>{
     let {x,y} = getMousePositionFromCanvas(e);
     let idOfClickedZone = getIdOfClickedZone(x, y, listOfZonesCoordinates);
-    console.log(idOfClickedZone);
-    console.log(Zones[idOfClickedZone-1].cordX + " / " + Zones[idOfClickedZone-1].cordY);
+    setSelectedZoneInfo(idOfClickedZone);
+    drawNetOfHexagons(listOfZonesCoordinates);
 });
+//send form and
+document.querySelector('#submitButton').addEventListener('click', ()=>{
+    let dataToSend = {
+        haveSpaceForHandicapped: document.getElementsByName('form-disabledParking')[0].checked,
+        isGuarded: document.getElementsByName('form-guardedParking')[0].checked,
+        isPaid: document.getElementsByName('form-paidParking')[0].checked,
+        atLeast15FreePlaces: document.getElementsByName('form-hugeParking')[0].checked,
+        isPrivate: document.getElementsByName('form-privateParking')[0].checked,
+        haveSpacesForElectrics: document.getElementsByName('form-electricCarParking')[0].checked,
+        zoneCordX: selectedZoneData.x,
+        zoneCordY: selectedZoneData.y,
+    };
+    let dataToSendAsJson = JSON.stringify(dataToSend);
+    let xhr = new XMLHttpRequest();
+    let url = "http://localhost:8081/requiredparkinglot";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(dataToSendAsJson);
+    xhr.onreadystatechange = (e) => {
+        let results = JSON.parse(xhr.responseText);
+        console.log(results)
+    }
+
+})
+
 //end of "main"
 
 
@@ -44,6 +72,14 @@ getMousePositionFromCanvas = (e) => {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
     };
+}
+
+setSelectedZoneInfo = (idOfClickedZone) =>{
+    let zone = Zones[idOfClickedZone-1];
+
+    selectedZoneData.id = idOfClickedZone;
+    selectedZoneData.x = zone.cordX;
+    selectedZoneData.y = zone.cordY;
 }
 
 getIdOfClickedZone = (mouseX, mouseY, zonesCoords) => {
@@ -73,15 +109,15 @@ getListOfZonesCoordinates = (zones) => {
 
     const margin = 0;
 
-    const x0 = 40;
-    const y0 = 40;
+    const x0 = mapWidth/6;
+    const y0 = mapHeight/9;
 
     //todo: dać równe marginesy dla siatki hexagonów, tzn. żeby na dole była taka przerwa jak na górze
 
-    const a = (mapWidth - margin * widthOfNet - x0 * 2) / widthOfNet+1;
-    const b = (mapHeight - margin * heightOfNet - y0 * 2) / heightOfNet+1;
+    const a = (mapWidth - margin * widthOfNet - x0) / widthOfNet+1;
+    const b = (mapHeight - margin * heightOfNet - y0) / heightOfNet+1;
     let c = a < b ? a : b;
-    const hexagonRadius = c/2 -1;
+    const hexagonRadius = c/2+1;
 
     let listOfCoordinatesOfHexagons = new Array(zones.length);
 
@@ -106,9 +142,20 @@ getListOfZonesCoordinates = (zones) => {
 }
 
 drawNetOfHexagons = (listOfCoordinates) =>{
-    for (let i = 0; i < listOfCoordinates.length; i++) {
+    mapCanvas.clearRect(0, 0, mapWidth, mapHeight);
+    for (let i = 0; i < listOfCoordinates.length; i++)
         drawHexagon( listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius );
+    if(selectedZoneData.id != null) {
+        drawHexagon(
+            listOfCoordinates[selectedZoneData.id-1].x,
+            listOfCoordinates[selectedZoneData.id-1].y,
+            listOfCoordinates[selectedZoneData.id-1].radius,
+            '#000000',
+            true,
+            'rgba(37,182,61,0.78)'
+        )
     }
+
 }
 
 drawHexagon = (posX, posY, radius, borderColor = "#000000", isFilled = false, fillColor = "#ffffff") => {

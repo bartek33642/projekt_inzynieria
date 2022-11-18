@@ -58,7 +58,7 @@ public class Seed {
                         boolean haveSpaceForHandicapped = random.nextBoolean();
                         boolean isGuarded = random.nextBoolean();
                         boolean isPaid = random.nextBoolean();
-                        int maximalCountOfFreeSpaces = 10;
+                        int maximalCountOfFreeSpaces = 40;
                         int freeSpaces = random.nextInt(maximalCountOfFreeSpaces);
                         boolean isPrivate = random.nextBoolean();
                         boolean haveSpacesForElectrics = random.nextBoolean();
