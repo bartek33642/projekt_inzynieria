@@ -63,14 +63,22 @@
   width: 100%;
   text-align: center;
 }
+.container .table {
+  margin-left: auto;
+  margin-right: auto;
+}
 .container table {
   border-spacing: 0;
 }
+.container table td {
+  font-size: 18px;
+}
 .container table #headerTable {
   background-color: #cccccc;
+  font-size: 20px;
+  font-weight: bold;
 }
 .container table tr td {
   border: 0.5px solid black;
-}
-
-/*# sourceMappingURL=style.css.map */
+  padding: 10px 30px 10px 30px;
+}/*# sourceMappingURL=style.css.map */

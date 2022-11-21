@@ -56,12 +56,24 @@ document.querySelector('#submitButton').addEventListener('click', ()=>{
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dataToSendAsJson);
+    
     xhr.onreadystatechange = (e) => {
         let results = JSON.parse(xhr.responseText);
         console.log(results)
+        let text="<table>"
+        let i;
+        
+        for (i = 0; i < 3; i++){
+            text += "<tr><td>" + results[i].parkingLotId + "</td> <td>" + result[i].score + "</td></tr></table>"
+        }
+        document.getElementsById("mydata").innerHTML = text;
     }
 
 })
+
+// function transferPage(){
+//     window.location.href="./second.html"
+// }
 
 //end of "main"
 
@@ -183,5 +195,4 @@ drawHexagon = (posX, posY, radius, borderColor = "#000000", isFilled = false, fi
         mapCanvas.stroke();
     }
 }
-
 
