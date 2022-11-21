@@ -63,22 +63,19 @@ document.querySelector('#submitButton').addEventListener('click', ()=>{
 
             let results = JSON.parse(xhr.responseText);
             console.log(results)
-            let text="<table>"
+            let text="<table><tr id='headerTable'><th>Parking Id</th><th>Score</th></tr>"
             let i;
 
             for (i = 0; i < 3; i++){
-                text += "<tr><td>" + results[i].parkingLotId + "</td> <td>" + results[i].score + "</td></tr></table>"
+                text += "<tr><td>" + results[i].parkingLotId + "</td> <td>" + results[i].score + "</td></tr>"
             }
-            document.getElementById("mydata").innerHTML = text;
+            text += "</table>"
+            document.getElementById("myData").innerHTML = text;
 
 
     }
 
 })
-
-function transferPage(){
-    window.location.href="./second.html"
-}
 
 //end of "main"
 

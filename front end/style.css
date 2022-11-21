@@ -64,13 +64,16 @@
   text-align: center;
 }
 #container .table {
+  display: flex;
+}
+#container #myData {
   margin-left: auto;
   margin-right: auto;
 }
 #container table {
   border-spacing: 0;
 }
-#container table td {
+#container table th td {
   font-size: 18px;
 }
 #container table #headerTable {
@@ -81,6 +84,4 @@
 #container table tr td {
   border: 0.5px solid black;
   padding: 10px 30px 10px 30px;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
