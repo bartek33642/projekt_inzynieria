@@ -56,9 +56,23 @@ document.querySelector('#submitButton').addEventListener('click', ()=>{
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dataToSendAsJson);
+
     xhr.onreadystatechange = (e) => {
-        let results = JSON.parse(xhr.responseText);
-        console.log(results)
+        document.getElementById("container").style.display="block";
+        document.getElementById("main").style.display="none";
+
+            let results = JSON.parse(xhr.responseText);
+            console.log(results)
+            let text="<table><tr id='headerTable'><th>Parking Id</th><th>Score</th></tr>"
+            let i;
+
+            for (i = 0; i < 3; i++){
+                text += "<tr><td>" + results[i].parkingLotId + "</td> <td>" + results[i].score + "</td></tr>"
+            }
+            text += "</table>"
+            document.getElementById("myData").innerHTML = text;
+
+
     }
 
 })
@@ -183,5 +197,4 @@ drawHexagon = (posX, posY, radius, borderColor = "#000000", isFilled = false, fi
         mapCanvas.stroke();
     }
 }
-
 
