@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking spot recomendation system</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="script.js" defer></script>
+
+
+
+
+<div id="main">
+    <div class="mainHeader">
+        <h1>Parking spot recomendation system</h1>
+        
+    </div>
+    <div class="formContainer">
+        <form >
+            <h3>Do you want to park in a paid parking lot?</h3>
+
+            <input type="radio" name="form-paidParking" value=1>
+            <label for="html">Yes</label>
+
+            <input type="radio" name="form-paidParking" value=0>
+            <label for="html">No</label>
+
+            
+            <h3>Do you want to park in a guarded parking lot?</h3>
+
+            <input type="radio" name="form-guardedParking" value=1>
+            <label for="html">Yes</label>
+
+            <input type="radio" name="form-guardedParking" value=0>
+            <label for="html">No</label>
+
+            
+            <h3>Do you want to park in a disabled parking?</h3>
+
+            <input type="radio" name="form-disabledParking" value=1>
+            <label for="html">Yes</label>
+
+            <input type="radio" name="form-disabledParking" value=0>
+            <label for="html">No</label>
+
+            
+            <h3>Do you want to park in a car park where at least 15 spaces are available?</h3>
+
+            <input type="radio" name="form-hugeParking" value=1>
+            <label for="html">Yes</label>
+
+            <input type="radio" name="form-hugeParking" value=0>
+            <label for="html">No</label>
+
+
+            <h3>Do you want to park in a private parking lot?</h3>
+
+            <input type="radio" name="form-privateParking" value="1">
+            <label for="html">Yes</label>
+
+            <input type="radio" name="form-privateParking" value="0">
+            <label for="html">No</label>
+
+
+            <h3>Do you want to park in the parking lot with an electric car?</h3>
+
+            <input type="radio" name="form-electricCarParking" value="1">
+            <label for="html">Yes</label>
+
+            <input type="radio" name="form-electricCarParking" value="0">
+            <label for="html">No</label>
+
+        </form>
+    </div>
+    <div class="mapContainer">
+        <h2>Choose a place where you want to park</h2>
+
+        <div class="canvasContainer">
+            <canvas id="mapCanvas">
+                Your browser does not support canvas element
+            </canvas>
+
+            <img src="images/tarnów.png" id="cityImage">
+        </div>
+
+    </div>
+
+     <button id="submitButton">SUBMIT</button>
+
+</div>
+
+<div id="container">
+    <div class="header">
+        <h1>Parking spot recomendation system</h1>
+    </div>
+    <div class="headerTwo">
+        <h4>Selected parking space for you</h4>
+    </div>
+    <div class="table">
+            <div id="myData"></div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
