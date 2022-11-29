@@ -1,9 +1,8 @@
 package com.example.maxsatApi.service;
 
-import com.example.maxsatApi.dto.ZoneDto;
+import com.example.maxsatApi.dto.MapZoneDto;
 import com.example.maxsatApi.model.Zone;
 import com.example.maxsatApi.repository.ZoneRepository;
-import org.dozer.DozerBeanMapper;
 import org.dozer.DozerBeanMapperSingletonWrapper;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
@@ -23,18 +22,18 @@ public class ZoneService {
         this.mapper = DozerBeanMapperSingletonWrapper.getInstance();
     }
 
-    public Iterable<ZoneDto> getZones() {
+    public Iterable<MapZoneDto> getZones() {
         Iterable<Zone> zones = zoneRepository.findAll();
-        List<ZoneDto> zoneDtos = new ArrayList<ZoneDto>();
+        List<MapZoneDto> zoneDtos = new ArrayList<MapZoneDto>();
         for(Zone zone : zones){
-            ZoneDto zoneDto = mapper.map(zone, ZoneDto.class);
+            MapZoneDto zoneDto = mapper.map(zone, MapZoneDto.class);
             zoneDtos.add(zoneDto);
         }
         return zoneDtos;
     }
 
-    public ZoneDto getZone(Integer id) {
+    public MapZoneDto getZone(Integer id) {
         Zone zone = zoneRepository.findById(id).get();
-        return mapper.map(zone, ZoneDto.class);
+        return mapper.map(zone, MapZoneDto.class);
     }
 }

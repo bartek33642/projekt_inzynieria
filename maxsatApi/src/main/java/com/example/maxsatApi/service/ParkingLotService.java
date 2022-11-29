@@ -1,7 +1,6 @@
 package com.example.maxsatApi.service;
 
 import com.example.maxsatApi.dto.AnswerDto;
-import com.example.maxsatApi.dto.ParkingLotDto;
 import com.example.maxsatApi.dto.ParkingLotRequirementsDto;
 import com.example.maxsatApi.dto.ParkingLotWithScore;
 import com.example.maxsatApi.extension.Solver;
@@ -13,8 +12,6 @@ import org.dozer.DozerBeanMapperSingletonWrapper;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service

@@ -1,6 +1,6 @@
 package com.example.maxsatApi.dto;
 
-public class ParkingLotDto {
+public class ResultParkingLotDto {
     public Integer parkingLotId;
     public boolean haveSpaceForHandicapped;
     public boolean isGuarded;
@@ -8,6 +8,7 @@ public class ParkingLotDto {
     public int freeSpaces;
     public boolean isPrivate;
     public boolean haveSpacesForElectrics;
+    public int score;
 
     public Integer getParkingLotId() {
         return parkingLotId;
