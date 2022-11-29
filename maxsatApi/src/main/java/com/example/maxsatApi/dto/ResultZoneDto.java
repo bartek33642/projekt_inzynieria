@@ -1,5 +1,8 @@
 package com.example.maxsatApi.dto;
 
+import com.example.maxsatApi.model.ParkingLot;
+import com.example.maxsatApi.model.Zone;
+
 import java.util.List;
 
 public class ResultZoneDto {
@@ -9,14 +12,24 @@ public class ResultZoneDto {
     private double demandFactor;
     private double accessibilityFactor;
     private double attractivenessFactor;
-    private List<ResultParkingLotDto> parkingLot;
+    private List<ResultParkingLotDto> resultParkingLotDtos;
 
-    public List<ResultParkingLotDto> getParkingLot() {
-        return parkingLot;
+    public ResultZoneDto(Zone zone, List<ResultParkingLotDto> resultParkingLotDtos) {
+        this.zoneId = zone.getZoneId();
+        this.cordX = zone.getCordX();
+        this.cordY = zone.getCordY();
+        this.demandFactor = zone.getDemandFactor();
+        this.accessibilityFactor = zone.getAccessibilityFactor();
+        this.attractivenessFactor = zone.getAttractivenessFactor();
+        this.resultParkingLotDtos = resultParkingLotDtos;
     }
 
-    public void setParkingLot(List<ResultParkingLotDto> parkingLot) {
-        this.parkingLot = parkingLot;
+    public List<ResultParkingLotDto> getResultParkingLotDtos() {
+        return resultParkingLotDtos;
+    }
+
+    public void setResultParkingLotDtos(List<ResultParkingLotDto> resultParkingLotDtos) {
+        this.resultParkingLotDtos = resultParkingLotDtos;
     }
 
     public int getZoneId() {

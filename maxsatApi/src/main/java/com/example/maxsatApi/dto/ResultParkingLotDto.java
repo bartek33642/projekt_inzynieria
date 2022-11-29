@@ -1,14 +1,45 @@
 package com.example.maxsatApi.dto;
 
+import com.example.maxsatApi.model.ParkingLot;
+
 public class ResultParkingLotDto {
-    public Integer parkingLotId;
-    public boolean haveSpaceForHandicapped;
-    public boolean isGuarded;
-    public boolean isPaid;
-    public int freeSpaces;
-    public boolean isPrivate;
-    public boolean haveSpacesForElectrics;
-    public int score;
+    private Integer parkingLotId;
+    private boolean haveSpaceForHandicapped;
+    private boolean isGuarded;
+    private boolean isPaid;
+    private int freeSpaces;
+    private boolean isPrivate;
+    private boolean haveSpacesForElectrics;
+    private int points;
+    private int score;
+
+    public ResultParkingLotDto(ParkingLot parkingLot, int score) {
+        this.parkingLotId = parkingLot.getParkingLotId();
+        this.haveSpaceForHandicapped = parkingLot.getHaveSpaceForHandicapped();
+        this.isGuarded = parkingLot.isGuarded();
+        this.isPaid = parkingLot.isPaid();
+        this.freeSpaces = parkingLot.getFreeSpaces();
+        this.isPrivate = parkingLot.isPrivate();
+        this.haveSpacesForElectrics = parkingLot.isHaveSpacesForElectrics();
+        this.points = parkingLot.getPoints();
+        this.score = score;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public Integer getParkingLotId() {
         return parkingLotId;

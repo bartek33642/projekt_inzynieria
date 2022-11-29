@@ -10,12 +10,12 @@
             <a>parkingLots</a>
             <b>parkingLots</b>
             <a-hint>com.example.maxsatApi.model.ParkingLot</a-hint>
-            <b-hint>com.example.maxsatApi.dto.ResultParkingLotDto</b-hint>
+            <b-hint>com.example.maxsatApi.dto.MapParkingLotDto</b-hint>
         </field>
     </mapping>
     <mapping>
         <class-a>com.example.maxsatApi.model.ParkingLot</class-a>
-        <class-b>com.example.maxsatApi.dto.ResultParkingLotDto</class-b>
+        <class-b>com.example.maxsatApi.dto.MapParkingLotDto</class-b>
         <field>
             <a>parkingLotId</a>
             <b>parkingLotId</b>

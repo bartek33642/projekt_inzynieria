@@ -1,5 +1,6 @@
 package com.example.maxsatApi.dto;
 
+import java.util.List;
 import java.util.Set;
 
 public class MapZoneDto {
@@ -9,6 +10,15 @@ public class MapZoneDto {
     public double demandFactor;
     public double accessibilityFactor;
     public double attractivenessFactor;
+    public List<MapParkingLotDto> parkingLotDtos;
+
+    public List<MapParkingLotDto> getParkingLotDtos() {
+        return parkingLotDtos;
+    }
+
+    public void setParkingLotDtos(List<MapParkingLotDto> parkingLotDtos) {
+        this.parkingLotDtos = parkingLotDtos;
+    }
 
     public int getZoneId() {
         return zoneId;
