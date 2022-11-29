@@ -1,18 +1,24 @@
 package com.example.maxsatApi.dto;
 
-import com.example.maxsatApi.model.ParkingLot;
-import com.example.maxsatApi.model.Zone;
-
-import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
-public class ZoneDto {
+public class MapZoneDto {
     public int zoneId;
     public int cordX;
     public int cordY;
     public double demandFactor;
     public double accessibilityFactor;
     public double attractivenessFactor;
+    public List<MapParkingLotDto> parkingLotDtos;
+
+    public List<MapParkingLotDto> getParkingLotDtos() {
+        return parkingLotDtos;
+    }
+
+    public void setParkingLotDtos(List<MapParkingLotDto> parkingLotDtos) {
+        this.parkingLotDtos = parkingLotDtos;
+    }
 
     public int getZoneId() {
         return zoneId;
@@ -62,13 +68,13 @@ public class ZoneDto {
         this.attractivenessFactor = attractivenessFactor;
     }
 
-    public Set<ParkingLotDto> getParkingLots() {
+    public Set<ResultParkingLotDto> getParkingLots() {
         return parkingLots;
     }
 
-    public void setParkingLots(Set<ParkingLotDto> parkingLots) {
+    public void setParkingLots(Set<ResultParkingLotDto> parkingLots) {
         this.parkingLots = parkingLots;
     }
 
-    public Set<ParkingLotDto> parkingLots;
+    public Set<ResultParkingLotDto> parkingLots;
 }

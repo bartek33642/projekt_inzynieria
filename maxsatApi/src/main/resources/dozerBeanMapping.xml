@@ -5,17 +5,17 @@
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
     <mapping>
         <class-a>com.example.maxsatApi.model.Zone</class-a>
-        <class-b>com.example.maxsatApi.dto.ZoneDto</class-b>
+        <class-b>com.example.maxsatApi.dto.MapZoneDto</class-b>
         <field relationship-type="non-cumulative">
             <a>parkingLots</a>
             <b>parkingLots</b>
             <a-hint>com.example.maxsatApi.model.ParkingLot</a-hint>
-            <b-hint>com.example.maxsatApi.dto.ParkingLotDto</b-hint>
+            <b-hint>com.example.maxsatApi.dto.MapParkingLotDto</b-hint>
         </field>
     </mapping>
     <mapping>
         <class-a>com.example.maxsatApi.model.ParkingLot</class-a>
-        <class-b>com.example.maxsatApi.dto.ParkingLotDto</class-b>
+        <class-b>com.example.maxsatApi.dto.MapParkingLotDto</class-b>
         <field>
             <a>parkingLotId</a>
             <b>parkingLotId</b>

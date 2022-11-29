@@ -1,10 +1,9 @@
 package com.example.maxsatApi.extension;
 
-import com.example.maxsatApi.dto.ParkingLotRequirementsDto;
-import com.example.maxsatApi.dto.ParkingLotWithScore;
+import com.example.maxsatApi.dto.*;
+import com.example.maxsatApi.model.Answer;
 import com.example.maxsatApi.model.ParkingLot;
 import com.example.maxsatApi.model.Zone;
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import org.sat4j.core.VecInt;
 import org.sat4j.maxsat.SolverFactory;
 import org.sat4j.maxsat.WeightedMaxSatDecorator;
@@ -13,7 +12,6 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.tools.ModelIterator;
 import org.sat4j.tools.OptToSatAdapter;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 public class Solver {
@@ -145,16 +143,22 @@ public class Solver {
         return Math.round((zone.getDemandFactor() + zone.getAccessibilityFactor() + zone.getAttractivenessFactor()) / 0.03);
     }
 
-    public List<ParkingLotWithScore> findTheBestParkingLotsWithScores(){
-        List<ParkingLot> selectedParkingLots = new ArrayList<>();
-        selectedZones.forEach(zone -> selectedParkingLots.addAll(zone.getParkingLots()));
+    public Answer createAnswerWithScore(){
         List<ParkingLotWithScore> parkingLotsWithScores = new ArrayList<>();
-        selectedParkingLots.forEach(parkingLot ->
-                parkingLotsWithScores.add(new ParkingLotWithScore(
-                        parkingLot, test(parkingLot)
-                )));
+        List<ResultZoneDto> resultZoneDtos = new ArrayList<>();
+        List<Integer> scores = new ArrayList<>();
+        for ( Zone zone : selectedZones){
+            List<ParkingLot> parkingLotsFromZone = zone.getParkingLots().stream().toList();
+            List<ResultParkingLotDto> resultParkingLotDtos = new ArrayList<>();
+            for (ParkingLot parkingLot : parkingLotsFromZone) {
+                int parkingLotScore = test(parkingLot);
+                resultParkingLotDtos.add(new ResultParkingLotDto(parkingLot, parkingLotScore));
+                parkingLotsWithScores.add(new ParkingLotWithScore(parkingLot, parkingLotScore));
+            }
+            resultZoneDtos.add(new ResultZoneDto(zone,resultParkingLotDtos));
+        }
         parkingLotsWithScores.sort(Comparator.comparingInt(ParkingLotWithScore::getScore).reversed());
-        return parkingLotsWithScores.subList(0,3);
+        return new Answer(parkingLotsWithScores, resultZoneDtos);
     }
     public int test(ParkingLot parkingLot) {
         int score = 0;

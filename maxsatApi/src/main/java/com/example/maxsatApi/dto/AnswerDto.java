@@ -1,27 +1,29 @@
 package com.example.maxsatApi.dto;
 
+import java.util.List;
+
 public class AnswerDto {
-    private int parkingLotId;
-    private int score;
+    private ResultParkingLotDto bestParkingLotDto;
+    private List<ResultZoneDto> resultZoneDtos;
 
-    public int getParkingLotId() {
-        return parkingLotId;
+    public AnswerDto(ResultParkingLotDto bestParkingLotDto, List<ResultZoneDto> resultZoneDtos) {
+        this.bestParkingLotDto = bestParkingLotDto;
+        this.resultZoneDtos = resultZoneDtos;
     }
 
-    public void setParkingLotId(int parkingLotId) {
-        this.parkingLotId = parkingLotId;
+    public ResultParkingLotDto getBestParkingLotDto() {
+        return bestParkingLotDto;
     }
 
-    public int getScore() {
-        return score;
+    public void setBestParkingLotDto(ResultParkingLotDto bestParkingLotDto) {
+        this.bestParkingLotDto = bestParkingLotDto;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public List<ResultZoneDto> getResultZoneDtos() {
+        return resultZoneDtos;
     }
 
-    public AnswerDto(int parkingLotId, int score) {
-        this.parkingLotId = parkingLotId;
-        this.score = score;
+    public void setResultZoneDtos(List<ResultZoneDto> resultZoneDtos) {
+        this.resultZoneDtos = resultZoneDtos;
     }
 }

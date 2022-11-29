@@ -1,9 +1,6 @@
 package com.example.maxsatApi.controller;
 
 import com.example.maxsatApi.dto.*;
-import com.example.maxsatApi.extension.Solver;
-import com.example.maxsatApi.model.ParkingLot;
-import com.example.maxsatApi.model.Zone;
 import com.example.maxsatApi.repository.ParkingLotRepository;
 import com.example.maxsatApi.repository.ZoneRepository;
 import com.example.maxsatApi.service.ParkingLotService;
@@ -12,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -34,18 +29,18 @@ public class ZoneController {
     }
 
     @GetMapping(value = "/zones")
-    public Iterable<ZoneDto> getZones(){
+    public Iterable<MapZoneDto> getZones(){
         return zoneService.getZones();
     }
 
     @GetMapping(value = "/zones/{id}")
-    public ZoneDto getZoneById(@PathVariable Integer id){
+    public MapZoneDto getZoneById(@PathVariable Integer id){
         return zoneService.getZone(id);
     }
 
     @PostMapping (value = "/requiredparkinglot")
-    public ResponseEntity<List<AnswerDto>> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
-        List<AnswerDto> answerDto = parkingLotService.getRequiredParkingLots(parkingLotRequirementsDto);
+    public ResponseEntity<AnswerDto> getRequiredParkingLots(@RequestBody ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
+        AnswerDto answerDto = parkingLotService.getAnswerFromSolver(parkingLotRequirementsDto);
         return new ResponseEntity<>(answerDto, HttpStatus.OK);
     }
 }

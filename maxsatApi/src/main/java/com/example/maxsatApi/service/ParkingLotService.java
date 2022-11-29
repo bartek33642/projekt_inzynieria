@@ -1,10 +1,11 @@
 package com.example.maxsatApi.service;
 
 import com.example.maxsatApi.dto.AnswerDto;
-import com.example.maxsatApi.dto.ParkingLotDto;
 import com.example.maxsatApi.dto.ParkingLotRequirementsDto;
 import com.example.maxsatApi.dto.ParkingLotWithScore;
+import com.example.maxsatApi.dto.ResultParkingLotDto;
 import com.example.maxsatApi.extension.Solver;
+import com.example.maxsatApi.model.Answer;
 import com.example.maxsatApi.model.ParkingLot;
 import com.example.maxsatApi.model.Zone;
 import com.example.maxsatApi.repository.ParkingLotRepository;
@@ -13,8 +14,6 @@ import org.dozer.DozerBeanMapperSingletonWrapper;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -29,28 +28,21 @@ public class ParkingLotService {
         this.mapper = DozerBeanMapperSingletonWrapper.getInstance();
     }
 
-    public List<AnswerDto> getRequiredParkingLots(ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
-        List<ParkingLotWithScore> bestResults = findTheBestParkingLotsWithScores(parkingLotRequirementsDto);
-        ParkingLotWithScore firstResult = bestResults.get(0);
-        ParkingLotWithScore secondResult = bestResults.get(1);
-        ParkingLotWithScore thirdResult = bestResults.get(2);
+    public AnswerDto getAnswerFromSolver(ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
+        List<ParkingLot> preferredParkingLots = parkingLotRepository.findThreeParkingLotsWithMostPoints();
+        List<Zone> allZones = (List<Zone>) zoneRepository.findAll();
+        Solver solver = new Solver(allZones, parkingLotRequirementsDto,preferredParkingLots);
+        Answer answer = solver.createAnswerWithScore();
+        List<ParkingLotWithScore> bestParkingLotsWithScores = answer.getParkingLotWithScores();
+        ParkingLotWithScore firstResult = bestParkingLotsWithScores.get(0);
+        ParkingLotWithScore secondResult = bestParkingLotsWithScores.get(1);
+        ParkingLotWithScore thirdResult = bestParkingLotsWithScores.get(2);
         ParkingLot firstParkingLot = firstResult.getParkingLot();
         ParkingLot secondParkingLot = secondResult.getParkingLot();
         ParkingLot thirdParkingLot = thirdResult.getParkingLot();
         updateScoresOfBestParkingLots(firstParkingLot, secondParkingLot, thirdParkingLot);
-        List<AnswerDto> answerDto = List.of(
-                new AnswerDto(firstParkingLot.getParkingLotId(), firstResult.getScore()),
-                new AnswerDto(secondParkingLot.getParkingLotId(), secondResult.getScore()),
-                new AnswerDto(thirdParkingLot.getParkingLotId(), thirdResult.getScore())
-        );
-        return answerDto;
-    }
-
-    private List<ParkingLotWithScore> findTheBestParkingLotsWithScores(ParkingLotRequirementsDto parkingLotRequirementsDto) throws Exception {
-        List<ParkingLot> preferredParkingLots = parkingLotRepository.findThreeParkingLotsWithMostPoints();
-        List<Zone> allZones = (List<Zone>) zoneRepository.findAll();
-        Solver solver = new Solver(allZones, parkingLotRequirementsDto,preferredParkingLots);
-        return solver.findTheBestParkingLotsWithScores();
+        ResultParkingLotDto bestParkingDto = new ResultParkingLotDto(firstResult.getParkingLot(),firstResult.getScore());
+        return new AnswerDto(bestParkingDto, answer.getResultZoneDtos());
     }
 
     private void updateScoresOfBestParkingLots(ParkingLot firstParkingLot, ParkingLot secondParkingLot, ParkingLot thirdParkingLot){
