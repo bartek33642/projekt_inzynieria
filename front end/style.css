@@ -1,21 +1,19 @@
 #main {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   font-family: Arial, Helvetica, sans-serif;
 }
-#main .mainHeader {
+#main #mainHeader {
   width: 100%;
 }
-#main .mainHeader h1 {
+#main #mainHeader h1 {
   font-size: 2vw;
   text-align: center;
 }
-#main .formContainer {
+#main #formContainer {
   width: 30vw;
   margin: 5vw;
-}
-#main .formContainer h3 {
-  font-size: 1.2vw;
 }
 #main .mapContainer {
   width: 40vw;
@@ -24,8 +22,9 @@
   justify-content: flex-start;
   align-items: flex-start;
 }
-#main .mapContainer h2 {
-  font-size: 2vw;
+#main .mapContainer #mapHeader {
+  height: 6vw;
+  font-size: 1.3vw;
 }
 #main .mapContainer .canvasContainer {
   display: flex;
@@ -53,44 +52,34 @@
   margin-left: 5%;
 }
 
-#container {
+#resultContainer {
   display: none;
-  align-items: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  width: 30%;
   font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
 }
-#container .header {
-  width: 100%;
-}
-#container .header .h1 {
-  text-align: center;
-}
-#container .headerTwo {
-  width: 100%;
-  text-align: center;
-}
-#container .table {
+#resultContainer .results {
   display: flex;
+  justify-content: flex-start;
 }
-#container #myData {
-  margin-left: auto;
-  margin-right: auto;
+#resultContainer .header {
+  width: 100%;
 }
-#container table {
-  border-spacing: 0;
+#resultContainer .header h2 {
+  font-size: 2rem;
+  margin: 0 auto 2%;
 }
-#container table th td {
-  font-size: 18px;
+#resultContainer table {
+  border: solid;
+  margin: 2vw;
 }
-#container table #headerTable {
-  background-color: #cccccc;
-  font-size: 20px;
-  font-weight: bold;
+#resultContainer table tr td {
+  border: solid 1px;
 }
-#container table tr td {
-  border: 0.5px solid black;
-  padding: 10px 30px 10px 30px;
+#resultContainer table .invisibleCell {
+  color: #ffffff;
+  border: #ffffff;
 }
 
 /*# sourceMappingURL=style.css.map */

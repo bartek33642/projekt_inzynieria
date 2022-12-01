@@ -4,24 +4,24 @@
 #main
     display: flex
     flex-wrap: wrap
+    justify-content: flex-end
 
 
     font-family: Arial, Helvetica, sans-serif
 
-    .mainHeader
+    #mainHeader
         width: 100%
-
         h1
             font-size: 2vw
             text-align: center
 
 
-    .formContainer
+    #formContainer
         width: 30vw
         margin: 5vw
 
-        h3
-            font-size: 1.2vw
+
+
 
 
 
@@ -31,9 +31,11 @@
         flex-direction: column
         justify-content: flex-start
         align-items: flex-start
+        //align-self: flex-end
 
-        h2
-            font-size: 2vw
+        #mapHeader
+            height: 6vw
+            font-size: 1.3vw
 
         .canvasContainer
             display: flex
@@ -63,46 +65,66 @@
         margin-left: 5%
 
 // Second page
-#container
+#resultContainer
 
     display: none
-    align-items: center
+    justify-content: flex-start
     flex-wrap: wrap
 
-    font-family: Arial, Helvetica, sans-serif
-    text-align: center
+    width: 30%
 
+    font-family: Arial, Helvetica, sans-serif
+    //text-align: center
+
+    .results
+        display: flex
+        justify-content: flex-start
 
     .header
         width: 100%
-        .h1 
-            text-align: center
-    
-    .headerTwo
-        width: 100%
-        text-align: center
+        h2
+            font-size: 2rem
+            margin: 0 auto 2%
 
-    .table 
-        display: flex
-
-    #myData
-        margin-left: auto
-        margin-right: auto
-            
     table
-        border-spacing: 0
+        border: solid
+        margin: 2vw
+    
+        tr td
+            border: solid 1px
 
-        th td
-            font-size: 18px
-
-        #headerTable
-            background-color: #cccccc
-            font-size: 20px
-            font-weight: bold
+        .invisibleCell
+            color: #ffffff
+            border: #ffffff
 
 
-    table tr td
-        border: 0.5px solid black
-        padding: 10px 30px 10px 30px
+        //text-align: center
+
+
+
+
+
+    //.table
+    //    display: flex
+    //
+    //#myData
+    //    margin-left: auto
+    //    margin-right: auto
+    //
+    //table
+    //    border-spacing: 0
+    //
+    //    th td
+    //        font-size: 18px
+    //
+    //    #headerTable
+    //        background-color: #cccccc
+    //        font-size: 20px
+    //        font-weight: bold
+    //
+    //
+    //table tr td
+    //    border: 0.5px solid black
+    //    padding: 10px 30px 10px 30px
 
 

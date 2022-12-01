@@ -2,10 +2,10 @@
 let canvasElement = document.querySelector('#mapCanvas')
 let mapCanvas = canvasElement.getContext('2d');
 
-let mapWidth = window.innerWidth * (40/100)
-let mapHeight = window.innerWidth * (25/100)
+let mapWidth = window.innerWidth * (40 / 100)
+let mapHeight = window.innerWidth * (25 / 100)
 
-mapCanvas.canvas.width  = mapWidth;
+mapCanvas.canvas.width = mapWidth;
 mapCanvas.canvas.height = mapHeight;
 
 document.querySelector("#cityImage").width = mapWidth;
@@ -20,26 +20,30 @@ let Zones = [];
 let listOfZonesCoordinates;
 
 let selectedZoneData = {
-    id:null,
-    x:null,
-    y:null
+    id: null,
+    x: null,
+    y: null
 };
 
 //async function called when JSON is received
 Http.onreadystatechange = (e) => {
     Zones = JSON.parse(Http.responseText);
+
     listOfZonesCoordinates = getListOfZonesCoordinates(Zones);
     drawNetOfHexagons(listOfZonesCoordinates);
 }
 
-canvasElement.addEventListener("click", (e) =>{
-    let {x,y} = getMousePositionFromCanvas(e);
+const canvasEventListener = (e) => {
+    let {x, y} = getMousePositionFromCanvas(e);
     let idOfClickedZone = getIdOfClickedZone(x, y, listOfZonesCoordinates);
     setSelectedZoneInfo(idOfClickedZone);
     drawNetOfHexagons(listOfZonesCoordinates);
-});
+}
+canvasElement.addEventListener("click", canvasEventListener);
+
+
 //send form and
-document.querySelector('#submitButton').addEventListener('click', ()=>{
+document.querySelector('#submitButton').addEventListener('click', () => {
     let dataToSend = {
         haveSpaceForHandicapped: document.getElementsByName('form-disabledParking')[0].checked,
         isGuarded: document.getElementsByName('form-guardedParking')[0].checked,
@@ -57,20 +61,58 @@ document.querySelector('#submitButton').addEventListener('click', ()=>{
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dataToSendAsJson);
 
+    // let wasFunctionBelowCalledBefore = false;
+
     xhr.onreadystatechange = (e) => {
-        document.getElementById("container").style.display="block";
-        document.getElementById("main").style.display="none";
+        // if(wasFunctionBelowCalledBefore)
+        //     return 0;
+        // else
+        //     wasFunctionBelowCalledBefore = true;
+        //hide unnecessary elements
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("mapHeaderContent").style.display = "none";
+        document.getElementById("submitButton").style.display = "none";
+        canvasElement.removeEventListener('click', canvasEventListener)
 
-            let results = JSON.parse(xhr.responseText);
-            console.log(results)
-            let text="<table><tr id='headerTable'><th>Parking Id</th><th>Score</th></tr>"
-            let i;
+        //show new element to display results
+        document.getElementById("resultContainer").style.display = "flex";
 
-            for (i = 0; i < 3; i++){
-                text += "<tr><td>" + results[i].parkingLotId + "</td> <td>" + results[i].score + "</td></tr>"
+        let results = JSON.parse(xhr.responseText);
+
+        //highlight neighbour zones around selected zone on canvas
+        for (const highlightedHexagon of results.resultZoneDtos) {
+            const id = highlightedHexagon.zoneId - 1;
+            if (id !== selectedZoneData.id - 1)
+                drawHexagon(
+                    listOfZonesCoordinates[id].x,
+                    listOfZonesCoordinates[id].y,
+                    listOfZonesCoordinates[id].radius,
+                    '#000000',
+                    true,
+                    'rgba(38,161,199,0.35)'
+                )
+        }
+
+        //display point on canvas on best parking lot
+
+        console.log(results)
+
+        const parkingTable = document.querySelector("#parkingLots");
+        const zoneTable = document.querySelector("#zones");
+
+        let rowIndex = 1;
+        for (const zone of results.resultZoneDtos){
+            zoneTable.insertRow(rowIndex).innerHTML=getRowWithZoneData(zone);
+
+            for(let i=0; i<zone.resultParkingLotDtos.length-1; i++){
+                zoneTable.insertRow(rowIndex+i+1).innerHTML="<tr><td class='invisibleCell'>a</td></tr>";
             }
-            text += "</table>"
-            document.getElementById("myData").innerHTML = text;
+            for(const parkingLot of zone.resultParkingLotDtos){
+                parkingTable.insertRow(rowIndex).innerHTML=getRowWithParkingLotData(parkingLot);
+                rowIndex++;
+            }
+        }
+
 
 
     }
@@ -78,7 +120,27 @@ document.querySelector('#submitButton').addEventListener('click', ()=>{
 })
 
 //end of "main"
+function getRowWithParkingLotData(parkingLot) {
+    //let result = "<tr>";
+    let result = "";
+    result += "<td>" + String(parkingLot.parkingLotId) + "</td>";
+    result += "<td>" + String(parkingLot.freeSpaces) + "</td>";
+    result += "<td>" + String(parkingLot.points) + "</td>";
+    result += "<td>" + String(parkingLot.score) + "</td>";
+    //result += "</tr>";
+    return result;
+}
 
+function getRowWithZoneData(zone) {
+    //let result = "<tr>";
+    let result = "";
+    result += "<td>" + String(zone.zoneId) + "</td>";
+    result += "<td>" + String(zone.accessibilityFactor) + "</td>";
+    result += "<td>" + String(zone.attractivenessFactor) + "</td>";
+    result += "<td>" + String(zone.demandFactor) + "</td>";
+    //result += "</tr>";
+    return result;
+}
 
 getMousePositionFromCanvas = (e) => {
     let rect = canvasElement.getBoundingClientRect();
@@ -88,21 +150,21 @@ getMousePositionFromCanvas = (e) => {
     };
 }
 
-setSelectedZoneInfo = (idOfClickedZone) =>{
-    let zone = Zones[idOfClickedZone-1];
+setSelectedZoneInfo = (idOfClickedZone) => {
+    let zone = Zones[idOfClickedZone - 1];
 
     selectedZoneData.id = idOfClickedZone;
     selectedZoneData.x = zone.cordX;
     selectedZoneData.y = zone.cordY;
 }
 
-getIdOfClickedZone = (mouseX, mouseY, zonesCoords) => {
+function getIdOfClickedZone(mouseX, mouseY, zonesCoords) {
     let bestCandidateId;
-    let bestCandidateDistance=9999;
+    let bestCandidateDistance = 9999;
 
     for (let i = 0; i < zonesCoords.length; i++) {
-        const distance = Math.sqrt( (mouseX - zonesCoords[i].x) ** 2 + (mouseY - zonesCoords[i].y) ** 2 );
-        if (distance < bestCandidateDistance && distance <= zonesCoords[i].radius){
+        const distance = Math.sqrt((mouseX - zonesCoords[i].x) ** 2 + (mouseY - zonesCoords[i].y) ** 2);
+        if (distance < bestCandidateDistance && distance <= zonesCoords[i].radius) {
             bestCandidateDistance = distance;
             bestCandidateId = zonesCoords[i].zoneId;
         }
@@ -111,38 +173,39 @@ getIdOfClickedZone = (mouseX, mouseY, zonesCoords) => {
     return bestCandidateId;
 }
 
-getListOfZonesCoordinates = (zones) => {
+function getListOfZonesCoordinates(zones) {
+//const getListOfZonesCoordinates = (zones) => {
     let widthOfNet = 0, heightOfNet = 0;
 
-    for(let i = 0; i < zones.length; i++){
-        if( zones[i].cordY > heightOfNet)
+    for (let i = 0; i < zones.length; i++) {
+        if (zones[i].cordY > heightOfNet)
             heightOfNet = zones[i].cordY;
-        if( zones[i].cordX > widthOfNet)
+        if (zones[i].cordX > widthOfNet)
             widthOfNet = zones[i].cordX;
     }
 
     const margin = 0;
 
-    const x0 = mapWidth/6;
-    const y0 = mapHeight/9;
+    const x0 = mapWidth / 6;
+    const y0 = mapHeight / 9;
 
     //todo: dać równe marginesy dla siatki hexagonów, tzn. żeby na dole była taka przerwa jak na górze
 
-    const a = (mapWidth - margin * widthOfNet - x0) / widthOfNet+1;
-    const b = (mapHeight - margin * heightOfNet - y0) / heightOfNet+1;
+    const a = (mapWidth - margin * widthOfNet - x0) / widthOfNet + 1;
+    const b = (mapHeight - margin * heightOfNet - y0) / heightOfNet + 1;
     let c = a < b ? a : b;
-    const hexagonRadius = c/2+1;
+    const hexagonRadius = c / 2 + 1;
 
     let listOfCoordinatesOfHexagons = new Array(zones.length);
 
-    for(let i = 0; i < zones.length; i++){
+    for (let i = 0; i < zones.length; i++) {
         const cordX = zones[i].cordX;
         const cordY = zones[i].cordY;
 
-        const oddRowAdjustment = cordX % 2 ? hexagonRadius * Math.sin( Math.PI / 3 ) : 0;
+        const oddRowAdjustment = cordX % 2 ? hexagonRadius * Math.sin(Math.PI / 3) : 0;
 
-        const x = (cordX * hexagonRadius) * (1 + Math.cos( Math.PI / 3 )) + x0 + margin * cordX;
-        const y = mapHeight - ( ( cordY * 2 * hexagonRadius) * Math.sin( Math.PI / 3 ) + oddRowAdjustment + y0 + margin * cordY);
+        const x = (cordX * hexagonRadius) * (1 + Math.cos(Math.PI / 3)) + x0 + margin * cordX;
+        const y = mapHeight - ((cordY * 2 * hexagonRadius) * Math.sin(Math.PI / 3) + oddRowAdjustment + y0 + margin * cordY);
         const zoneId = zones[i].zoneId
 
         listOfCoordinatesOfHexagons[i] = {
@@ -155,15 +218,15 @@ getListOfZonesCoordinates = (zones) => {
     return listOfCoordinatesOfHexagons;
 }
 
-drawNetOfHexagons = (listOfCoordinates) =>{
+function drawNetOfHexagons(listOfCoordinates) {
     mapCanvas.clearRect(0, 0, mapWidth, mapHeight);
     for (let i = 0; i < listOfCoordinates.length; i++)
-        drawHexagon( listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius );
-    if(selectedZoneData.id != null) {
+        drawHexagon(listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius);
+    if (selectedZoneData.id != null) {
         drawHexagon(
-            listOfCoordinates[selectedZoneData.id-1].x,
-            listOfCoordinates[selectedZoneData.id-1].y,
-            listOfCoordinates[selectedZoneData.id-1].radius,
+            listOfCoordinates[selectedZoneData.id - 1].x,
+            listOfCoordinates[selectedZoneData.id - 1].y,
+            listOfCoordinates[selectedZoneData.id - 1].radius,
             '#000000',
             true,
             'rgba(37,182,61,0.78)'
@@ -172,25 +235,25 @@ drawNetOfHexagons = (listOfCoordinates) =>{
 
 }
 
-drawHexagon = (posX, posY, radius, borderColor = "#000000", isFilled = false, fillColor = "#ffffff") => {
+function drawHexagon(posX, posY, radius, borderColor = "#000000", isFilled = false, fillColor = "#ffffff") {
     let pi = Math.PI;
 
     mapCanvas.lineWidth = 1;
 
     mapCanvas.fillStyle = fillColor;
-    mapCanvas.strokeStyle  = borderColor;
+    mapCanvas.strokeStyle = borderColor;
 
     mapCanvas.beginPath();
-    mapCanvas.moveTo( posX + radius * Math.cos( pi/3 ), posY + radius * Math.sin( pi/3 ));
-    mapCanvas.lineTo( posX + radius , posY);
-    mapCanvas.lineTo( posX + radius * Math.cos( 5*pi/3 ), posY + radius * Math.sin( 5*pi/3 ));
-    mapCanvas.lineTo( posX + radius * Math.cos( 4*pi/3 ), posY + radius * Math.sin( 4*pi/3 ));
-    mapCanvas.lineTo( posX - radius , posY);
-    mapCanvas.lineTo( posX + radius * Math.cos( 2*pi/3 ), posY + radius * Math.sin( 2*pi/3 ));
-    mapCanvas.lineTo( posX + radius * Math.cos( pi/3 ), posY + radius * Math.sin( pi/3 ));
-    mapCanvas.lineTo( posX + radius , posY);
+    mapCanvas.moveTo(posX + radius * Math.cos(pi / 3), posY + radius * Math.sin(pi / 3));
+    mapCanvas.lineTo(posX + radius, posY);
+    mapCanvas.lineTo(posX + radius * Math.cos(5 * pi / 3), posY + radius * Math.sin(5 * pi / 3));
+    mapCanvas.lineTo(posX + radius * Math.cos(4 * pi / 3), posY + radius * Math.sin(4 * pi / 3));
+    mapCanvas.lineTo(posX - radius, posY);
+    mapCanvas.lineTo(posX + radius * Math.cos(2 * pi / 3), posY + radius * Math.sin(2 * pi / 3));
+    mapCanvas.lineTo(posX + radius * Math.cos(pi / 3), posY + radius * Math.sin(pi / 3));
+    mapCanvas.lineTo(posX + radius, posY);
 
-    if(isFilled){
+    if (isFilled) {
         mapCanvas.fill();
         drawHexagon(posX, posY, radius, borderColor, 0);
     } else {
