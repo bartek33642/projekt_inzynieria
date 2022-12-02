@@ -111,7 +111,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
                 zoneTable.insertRow(rowIndex).innerHTML = getRowWithZoneData(zone);
 
                 for (let i = 0; i < zone.resultParkingLotDtos.length - 1; i++) {
-                    zoneTable.insertRow(rowIndex + i + 1).innerHTML = "<tr><td class='invisibleCell'>a</td></tr>";
+                    zoneTable.insertRow(rowIndex + i + 1).innerHTML = "<tr><td class='invisibleCell'>-</td></tr>";
                 }
                 for (const parkingLot of zone.resultParkingLotDtos) {
                     parkingTable.insertRow(rowIndex).innerHTML = getRowWithParkingLotData(parkingLot);
@@ -124,7 +124,9 @@ document.querySelector('#submitButton').addEventListener('click', () => {
                 parkingTable.insertRow(rowIndex - 1).innerHTML = "<tr><td class='bufferCell' colspan='4'></td></tr>";
 
             }
-
+            //
+            document.getElementById("bestParkinkResult").innerHTML = results.bestParkingLotDto.parkingLotId;
+            //
             //display point on canvas on best parking lot
             let scale = listOfZonesCoordinates[bestparkingZone].radius / 10
 

@@ -73,13 +73,17 @@
 #resultContainer table {
   border: solid;
   margin: 0;
+  background-color: #fcfcfc;
 }
 #resultContainer table tr td {
   border: none;
 }
+#resultContainer table td {
+  text-align: center;
+}
 #resultContainer table .invisibleCell {
-  color: #ffffff;
-  border: #ffffff;
+  color: #fcfcfc;
+  border: #fcfcfc;
 }
 #resultContainer table .highlightedCell {
   background-color: #00dd00;
@@ -88,4 +92,16 @@
   background-color: #000000;
 }
 
-/*# sourceMappingURL=style.css.map */
+#resultBestParking {
+  display: none;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 30%;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10%;
+}
+#resultBestParking .bestParkinkResult {
+  border: solid;
+  margin: 0;
+  background-color: #fcfcfc;
+}/*# sourceMappingURL=style.css.map */
