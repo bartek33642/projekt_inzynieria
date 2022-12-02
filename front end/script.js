@@ -66,12 +66,6 @@ document.querySelector('#submitButton').addEventListener('click', () => {
     xhr.onreadystatechange = (e) => {
         console.log(e.target.readyState);
         if (e.target.readyState === 4) {
-
-
-            // if(wasFunctionBelowCalledBefore)
-            //     return 0;
-            // else
-            //     wasFunctionBelowCalledBefore = true;
             //hide unnecessary elements
             document.getElementById("formContainer").style.display = "none";
             document.getElementById("mapHeaderContent").style.display = "none";
@@ -95,6 +89,13 @@ document.querySelector('#submitButton').addEventListener('click', () => {
                         true,
                         'rgba(38,161,199,0.35)'
                     )
+                mapCanvas.fillStyle = "#222222";
+                mapCanvas.font = "18px Arial";
+                mapCanvas.fillText(
+                    String(id),
+                    listOfZonesCoordinates[id].x,
+                    listOfZonesCoordinates[id].y,
+                )
             }
 
             //display point on canvas on best parking lot
@@ -125,7 +126,8 @@ document.querySelector('#submitButton').addEventListener('click', () => {
 
             }
             //
-            document.getElementById("bestParkinkResult").innerHTML = results.bestParkingLotDto.parkingLotId;
+            document.getElementById("bestParkingResult").innerHTML = results.bestParkingLotDto.parkingLotId;
+            document.getElementById("bestParkingResultZone").innerHTML = bestparkingZone;
             //
             //display point on canvas on best parking lot
             let scale = listOfZonesCoordinates[bestparkingZone].radius / 10
