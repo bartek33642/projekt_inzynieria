@@ -64,62 +64,80 @@ document.querySelector('#submitButton').addEventListener('click', () => {
     // let wasFunctionBelowCalledBefore = false;
 
     xhr.onreadystatechange = (e) => {
-        // if(wasFunctionBelowCalledBefore)
-        //     return 0;
-        // else
-        //     wasFunctionBelowCalledBefore = true;
-        //hide unnecessary elements
-        document.getElementById("formContainer").style.display = "none";
-        document.getElementById("mapHeaderContent").style.display = "none";
-        document.getElementById("submitButton").style.display = "none";
-        canvasElement.removeEventListener('click', canvasEventListener)
+        console.log(e.target.readyState);
+        if (e.target.readyState === 4) {
 
-        //show new element to display results
-        document.getElementById("resultContainer").style.display = "flex";
 
-        let results = JSON.parse(xhr.responseText);
+            // if(wasFunctionBelowCalledBefore)
+            //     return 0;
+            // else
+            //     wasFunctionBelowCalledBefore = true;
+            //hide unnecessary elements
+            document.getElementById("formContainer").style.display = "none";
+            document.getElementById("mapHeaderContent").style.display = "none";
+            document.getElementById("submitButton").style.display = "none";
+            canvasElement.removeEventListener('click', canvasEventListener)
 
-        //highlight neighbour zones around selected zone on canvas
-        for (const highlightedHexagon of results.resultZoneDtos) {
-            const id = highlightedHexagon.zoneId - 1;
-            if (id !== selectedZoneData.id - 1)
-                drawHexagon(
-                    listOfZonesCoordinates[id].x,
-                    listOfZonesCoordinates[id].y,
-                    listOfZonesCoordinates[id].radius,
-                    '#000000',
-                    true,
-                    'rgba(38,161,199,0.35)'
-                )
-        }
+            //show new element to display results
+            document.getElementById("resultContainer").style.display = "flex";
 
-        //display point on canvas on best parking lot
-
-        console.log(results)
-
-        const parkingTable = document.querySelector("#parkingLots");
-        const zoneTable = document.querySelector("#zones");
-
-        let rowIndex = 1;
-        for (const zone of results.resultZoneDtos){
-            zoneTable.insertRow(rowIndex).innerHTML=getRowWithZoneData(zone);
-
-            for(let i=0; i<zone.resultParkingLotDtos.length-1; i++){
-                zoneTable.insertRow(rowIndex+i+1).innerHTML="<tr><td class='invisibleCell'>a</td></tr>";
+            let results = JSON.parse(xhr.responseText);
+            console.log(results);
+            //highlight neighbour zones around selected zone on canvas
+            for (const highlightedHexagon of results.resultZoneDtos) {
+                const id = highlightedHexagon.zoneId - 1;
+                if (id !== selectedZoneData.id - 1)
+                    drawHexagon(
+                        listOfZonesCoordinates[id].x,
+                        listOfZonesCoordinates[id].y,
+                        listOfZonesCoordinates[id].radius,
+                        '#000000',
+                        true,
+                        'rgba(38,161,199,0.35)'
+                    )
             }
-            for(const parkingLot of zone.resultParkingLotDtos){
-                parkingTable.insertRow(rowIndex).innerHTML=getRowWithParkingLotData(parkingLot);
+
+            //display point on canvas on best parking lot
+
+            console.log(results)
+
+            const parkingTable = document.querySelector("#parkingLots");
+            const zoneTable = document.querySelector("#zones");
+
+            let bestparkingZone = 9999;
+
+            let rowIndex = 1;
+            for (const zone of results.resultZoneDtos) {
+                zoneTable.insertRow(rowIndex).innerHTML = getRowWithZoneData(zone);
+
+                for (let i = 0; i < zone.resultParkingLotDtos.length - 1; i++) {
+                    zoneTable.insertRow(rowIndex + i + 1).innerHTML = "<tr><td class='invisibleCell'>a</td></tr>";
+                }
+                for (const parkingLot of zone.resultParkingLotDtos) {
+                    parkingTable.insertRow(rowIndex).innerHTML = getRowWithParkingLotData(parkingLot);
+                    if( results.bestParkingLotDto.parkingLotId == parkingLot.parkingLotId){
+                        bestparkingZone = zone.zoneId;
+                    }
+                    rowIndex++;
+                }
                 rowIndex++;
+                zoneTable.insertRow(rowIndex-1).innerHTML = "<tr><td class='buforCell' colspan='4'></td></tr>";
+                parkingTable.insertRow(rowIndex-1).innerHTML = "<tr><td class='buforCell' colspan='4'></td></tr>";
+
             }
+            
+            //display point on canvas on best parking lot
+
+
         }
-
-
 
     }
 
 })
-
 //end of "main"
+
+
+
 function getRowWithParkingLotData(parkingLot) {
     //let result = "<tr>";
     let result = "";
@@ -134,10 +152,10 @@ function getRowWithParkingLotData(parkingLot) {
 function getRowWithZoneData(zone) {
     //let result = "<tr>";
     let result = "";
-    result += "<td>" + String(zone.zoneId) + "</td>";
-    result += "<td>" + String(zone.accessibilityFactor) + "</td>";
-    result += "<td>" + String(zone.attractivenessFactor) + "</td>";
-    result += "<td>" + String(zone.demandFactor) + "</td>";
+    result += "<td class='highlightedCell'>" + String(zone.zoneId) + "</td>";
+    result += "<td class='highlightedCell'>" + String(zone.accessibilityFactor) + "</td>";
+    result += "<td class='highlightedCell'>" + String(zone.attractivenessFactor) + "</td>";
+    result += "<td class='highlightedCell'>" + String(zone.demandFactor) + "</td>";
     //result += "</tr>";
     return result;
 }

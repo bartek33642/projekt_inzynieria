@@ -72,14 +72,18 @@
 }
 #resultContainer table {
   border: solid;
-  margin: 2vw;
+  margin: 0;
 }
 #resultContainer table tr td {
-  border: solid 1px;
+  border: none;
 }
 #resultContainer table .invisibleCell {
   color: #ffffff;
   border: #ffffff;
 }
-
-/*# sourceMappingURL=style.css.map */
+#resultContainer table .highlightedCell {
+  background-color: #00dd00;
+}
+#resultContainer table .buforCell {
+  background-color: #000000;
+}/*# sourceMappingURL=style.css.map */
