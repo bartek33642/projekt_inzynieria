@@ -115,27 +115,37 @@ document.querySelector('#submitButton').addEventListener('click', () => {
                 }
                 for (const parkingLot of zone.resultParkingLotDtos) {
                     parkingTable.insertRow(rowIndex).innerHTML = getRowWithParkingLotData(parkingLot);
-                    if( results.bestParkingLotDto.parkingLotId == parkingLot.parkingLotId){
-                        bestparkingZone = zone.zoneId;
-                    }
+                    if (results.bestParkingLotDto.parkingLotId === parkingLot.parkingLotId)
+                        bestparkingZone = zone.zoneId - 1;
                     rowIndex++;
                 }
                 rowIndex++;
-                zoneTable.insertRow(rowIndex-1).innerHTML = "<tr><td class='buforCell' colspan='4'></td></tr>";
-                parkingTable.insertRow(rowIndex-1).innerHTML = "<tr><td class='buforCell' colspan='4'></td></tr>";
+                zoneTable.insertRow(rowIndex - 1).innerHTML = "<tr><td class='bufferCell' colspan='4'></td></tr>";
+                parkingTable.insertRow(rowIndex - 1).innerHTML = "<tr><td class='bufferCell' colspan='4'></td></tr>";
 
             }
-            
-            //display point on canvas on best parking lot
 
+            //display point on canvas on best parking lot
+            let scale = listOfZonesCoordinates[bestparkingZone].radius / 10
+
+            mapCanvas.beginPath();
+            mapCanvas.arc(
+                listOfZonesCoordinates[bestparkingZone].x + ((Math.random()-1)*7*scale),
+                listOfZonesCoordinates[bestparkingZone].y + ((Math.random()-1)*6*scale),
+                scale,
+                0,
+                2 * Math.PI
+            );
+            mapCanvas.fillStyle = '#ff0000';
+            mapCanvas.fill();
 
         }
 
     }
 
 })
-//end of "main"
 
+//end of "main"
 
 
 function getRowWithParkingLotData(parkingLot) {

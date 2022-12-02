@@ -84,6 +84,8 @@
 #resultContainer table .highlightedCell {
   background-color: #00dd00;
 }
-#resultContainer table .buforCell {
+#resultContainer table .bufferCell {
   background-color: #000000;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */
