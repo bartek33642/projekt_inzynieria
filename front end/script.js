@@ -76,7 +76,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
             document.getElementById("resultContainer").style.display = "flex";
 
             let results = JSON.parse(xhr.responseText);
-            console.log(results);
+
             //highlight neighbour zones around selected zone on canvas
             for (const highlightedHexagon of results.resultZoneDtos) {
                 const id = highlightedHexagon.zoneId - 1;
@@ -92,7 +92,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
                 mapCanvas.fillStyle = "#222222";
                 mapCanvas.font = "18px Arial";
                 mapCanvas.fillText(
-                    String(id),
+                    String(id+1),
                     listOfZonesCoordinates[id].x,
                     listOfZonesCoordinates[id].y,
                 )
@@ -101,6 +101,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
             //display point on canvas on best parking lot
 
             console.log(results)
+            console.log(listOfZonesCoordinates)
 
             const parkingTable = document.querySelector("#parkingLots");
             const zoneTable = document.querySelector("#zones");
@@ -127,7 +128,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
             }
             //
             document.getElementById("bestParkingResult").innerHTML = results.bestParkingLotDto.parkingLotId;
-            document.getElementById("bestParkingResultZone").innerHTML = bestparkingZone;
+            document.getElementById("bestParkingResultZone").innerHTML = bestparkingZone+1;
             //
             //display point on canvas on best parking lot
             let scale = listOfZonesCoordinates[bestparkingZone].radius / 10
