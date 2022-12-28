@@ -1,13 +1,46 @@
+body
+  background-image: url("../images/earth_from_space.jpg")
+  background-size: cover
 #main
   display: flex
   flex-wrap: wrap
-  justify-content: flex-end
-  background-image: url("../images/earth_from_space.jpg")
-  background-size: cover
+  justify-content: center
+  align-items: center
+  flex-direction: column
   font-family: Arial, Helvetica, sans-serif
 
   #mainHeader
     width: 100%
+    color: #fffefe
+    text-align: center
     h1
       font-size: 2vw
-      text-align: center
+
+  #formContainer
+    width: 60vw
+    margin: 5vw
+    display: flex
+    justify-content: space-between
+    .questionRow
+      .questionTile
+        width: 400px
+        padding: 20px
+        border-radius: 25px
+        background-color: #2a2929
+        margin-top: 20px
+        opacity: 0.7
+
+  #submitButton
+    justify-content: center
+    background-color: #796654
+    border: none
+    border-radius: 12px
+    padding: 20px 40px
+    font-weight: bold
+    font-size: 20px
+    margin-bottom: 40px
+    opacity: 0.9
+    cursor: pointer
+    border: #000000 solid 3px
+  #submitButton:hover
+    background-color: #65594e
