@@ -1,0 +1,17 @@
+#main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  background-image: url("../images/earth_from_space.jpg");
+  background-size: cover;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#main #mainHeader {
+  width: 100%;
+}
+#main #mainHeader h1 {
+  font-size: 2vw;
+  text-align: center;
+}
+
+/*# sourceMappingURL=main_page.css.map */

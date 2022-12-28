@@ -2,6 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  background-image: url("../images/earth_from_space.jpg");
+  background-size: cover;
   font-family: Arial, Helvetica, sans-serif;
 }
 #main #mainHeader {
@@ -105,4 +107,4 @@
   background-color: #fcfcfc;
 }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=second_page.css.map */
