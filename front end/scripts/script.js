@@ -11,6 +11,8 @@ mapCanvas.canvas.height = mapHeight;
 document.querySelector("#cityImage").width = mapWidth;
 document.querySelector("#cityImage").height = mapHeight;
 
+const result = localStorage.getItem("disabledParking");
+console.log(result);
 
 const Http = new XMLHttpRequest();
 Http.open('GET', 'http://localhost:8081/zones');
@@ -28,7 +30,6 @@ let selectedZoneData = {
 //async function called when JSON is received
 Http.onreadystatechange = (e) => {
     Zones = JSON.parse(Http.responseText);
-
     listOfZonesCoordinates = getListOfZonesCoordinates(Zones);
     drawNetOfHexagons(listOfZonesCoordinates);
 }
@@ -41,16 +42,15 @@ const canvasEventListener = (e) => {
 }
 canvasElement.addEventListener("click", canvasEventListener);
 
-
 //send form and
 document.querySelector('#submitButton').addEventListener('click', () => {
     let dataToSend = {
-        haveSpaceForHandicapped: document.getElementsByName('form-disabledParking')[0].checked,
-        isGuarded: document.getElementsByName('form-guardedParking')[0].checked,
-        isPaid: document.getElementsByName('form-paidParking')[0].checked,
-        atLeast15FreePlaces: document.getElementsByName('form-hugeParking')[0].checked,
-        isPrivate: document.getElementsByName('form-privateParking')[0].checked,
-        haveSpacesForElectrics: document.getElementsByName('form-electricCarParking')[0].checked,
+        haveSpaceForHandicapped: localStorage.getItem("disabledParking"),
+        isGuarded: localStorage.getItem("guardedParking"),
+        isPaid: localStorage.getItem("paidParking"),
+        atLeast15FreePlaces: localStorage.getItem("hugeParking"),
+        isPrivate: localStorage.getItem("privateParking"),
+        haveSpacesForElectrics: localStorage.getItem("electricCarParking"),
         zoneCordX: selectedZoneData.x,
         zoneCordY: selectedZoneData.y,
     };
@@ -85,7 +85,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
                         listOfZonesCoordinates[id].x,
                         listOfZonesCoordinates[id].y,
                         listOfZonesCoordinates[id].radius,
-                        '#000000',
+                        '#ffffff',
                         true,
                         'rgba(38,161,199,0.35)'
                     )
@@ -254,13 +254,13 @@ function getListOfZonesCoordinates(zones) {
 function drawNetOfHexagons(listOfCoordinates) {
     mapCanvas.clearRect(0, 0, mapWidth, mapHeight);
     for (let i = 0; i < listOfCoordinates.length; i++)
-        drawHexagon(listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius);
+        drawHexagon(listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius, '#ffffff');
     if (selectedZoneData.id != null) {
         drawHexagon(
             listOfCoordinates[selectedZoneData.id - 1].x,
             listOfCoordinates[selectedZoneData.id - 1].y,
             listOfCoordinates[selectedZoneData.id - 1].radius,
-            '#000000',
+            '#ffffff',
             true,
             'rgba(37,182,61,0.78)'
         )
@@ -268,13 +268,14 @@ function drawNetOfHexagons(listOfCoordinates) {
 
 }
 
-function drawHexagon(posX, posY, radius, borderColor = "#000000", isFilled = false, fillColor = "#ffffff") {
+function drawHexagon(posX, posY, radius, borderColor = "#ffffff", isFilled = false, fillColor = "#ffffff") {
     let pi = Math.PI;
 
     mapCanvas.lineWidth = 1;
 
     mapCanvas.fillStyle = fillColor;
     mapCanvas.strokeStyle = borderColor;
+    mapCanvas.lineWidth = 3;
 
     mapCanvas.beginPath();
     mapCanvas.moveTo(posX + radius * Math.cos(pi / 3), posY + radius * Math.sin(pi / 3));

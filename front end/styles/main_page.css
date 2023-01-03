@@ -24,6 +24,7 @@ body {
   margin: 5vw;
   display: flex;
   justify-content: space-between;
+  color: #747373;
 }
 #main #formContainer .questionRow .questionTile {
   width: 400px;
