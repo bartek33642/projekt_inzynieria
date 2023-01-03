@@ -2,14 +2,14 @@
 let canvasElement = document.querySelector('#mapCanvas')
 let mapCanvas = canvasElement.getContext('2d');
 
-let mapWidth = window.innerWidth * (40 / 100)
-let mapHeight = window.innerWidth * (25 / 100)
+let mapWidth = window.innerWidth
+let mapHeight = window.innerHeight
 
 mapCanvas.canvas.width = mapWidth;
 mapCanvas.canvas.height = mapHeight;
 
-document.querySelector("#cityImage").width = mapWidth;
-document.querySelector("#cityImage").height = mapHeight;
+document.querySelector("#cityImage").width = mapWidth * 0.99;
+document.querySelector("#cityImage").height = mapHeight * 0.99;
 
 const result = localStorage.getItem("disabledParking");
 console.log(result);
@@ -31,14 +31,14 @@ let selectedZoneData = {
 Http.onreadystatechange = (e) => {
     Zones = JSON.parse(Http.responseText);
     listOfZonesCoordinates = getListOfZonesCoordinates(Zones);
-    drawNetOfHexagons(listOfZonesCoordinates);
+    drawNetOfHexagons(mapCanvas, listOfZonesCoordinates);
 }
 
 const canvasEventListener = (e) => {
     let {x, y} = getMousePositionFromCanvas(e);
     let idOfClickedZone = getIdOfClickedZone(x, y, listOfZonesCoordinates);
     setSelectedZoneInfo(idOfClickedZone);
-    drawNetOfHexagons(listOfZonesCoordinates);
+    drawNetOfHexagons(mapCanvas, listOfZonesCoordinates);
 }
 canvasElement.addEventListener("click", canvasEventListener);
 
@@ -67,10 +67,13 @@ document.querySelector('#submitButton').addEventListener('click', () => {
         console.log(e.target.readyState);
         if (e.target.readyState === 4) {
             //hide unnecessary elements
-            document.getElementById("formContainer").style.display = "none";
+            //document.getElementById("formContainer").style.display = "none";
             document.getElementById("mapHeaderContent").style.display = "none";
             document.getElementById("submitButton").style.display = "none";
+            document.getElementById("mapCanvas").style.display = "none";
+            document.getElementById("cityImage").style.display = "none";
             canvasElement.removeEventListener('click', canvasEventListener)
+            showFinalCanvas();
 
             //show new element to display results
             document.getElementById("resultContainer").style.display = "flex";
@@ -81,7 +84,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
             for (const highlightedHexagon of results.resultZoneDtos) {
                 const id = highlightedHexagon.zoneId - 1;
                 if (id !== selectedZoneData.id - 1)
-                    drawHexagon(
+                    drawHexagon(mapCanvas,
                         listOfZonesCoordinates[id].x,
                         listOfZonesCoordinates[id].y,
                         listOfZonesCoordinates[id].radius,
@@ -251,12 +254,12 @@ function getListOfZonesCoordinates(zones) {
     return listOfCoordinatesOfHexagons;
 }
 
-function drawNetOfHexagons(listOfCoordinates) {
+function drawNetOfHexagons(mapCanvas, listOfCoordinates) {
     mapCanvas.clearRect(0, 0, mapWidth, mapHeight);
     for (let i = 0; i < listOfCoordinates.length; i++)
-        drawHexagon(listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius, '#ffffff');
+        drawHexagon(mapCanvas, listOfCoordinates[i].x, listOfCoordinates[i].y, listOfCoordinates[i].radius, '#ffffff');
     if (selectedZoneData.id != null) {
-        drawHexagon(
+        drawHexagon(mapCanvas,
             listOfCoordinates[selectedZoneData.id - 1].x,
             listOfCoordinates[selectedZoneData.id - 1].y,
             listOfCoordinates[selectedZoneData.id - 1].radius,
@@ -268,7 +271,7 @@ function drawNetOfHexagons(listOfCoordinates) {
 
 }
 
-function drawHexagon(posX, posY, radius, borderColor = "#ffffff", isFilled = false, fillColor = "#ffffff") {
+function drawHexagon(mapCanvas, posX, posY, radius, borderColor = "#ffffff", isFilled = false, fillColor = "#ffffff") {
     let pi = Math.PI;
 
     mapCanvas.lineWidth = 1;
@@ -289,9 +292,26 @@ function drawHexagon(posX, posY, radius, borderColor = "#ffffff", isFilled = fal
 
     if (isFilled) {
         mapCanvas.fill();
-        drawHexagon(posX, posY, radius, borderColor, 0);
+        drawHexagon(mapCanvas, posX, posY, radius, borderColor, 0);
     } else {
         mapCanvas.stroke();
     }
+}
+
+function showFinalCanvas(){
+    document.getElementById("mapCanvas").style.display = "inherit";
+    document.getElementById("cityImage2").style.display = "inherit";
+    let canvasElement = document.querySelector('#finalMapCanvas')
+    let mapCanvas = canvasElement.getContext('2d');
+
+    let finalMapWidth = window.innerWidth * (40 / 100)
+    let finalMapHeight = window.innerWidth * (25 / 100)
+
+    mapCanvas.canvas.width = finalMapWidth;
+    mapCanvas.canvas.height = finalMapHeight;
+
+    document.querySelector("#cityImage2").width = finalMapWidth;
+    document.querySelector("#cityImage2").height = finalMapHeight;
+    drawNetOfHexagons(mapCanvas, listOfZonesCoordinates);
 }
 

@@ -34,12 +34,10 @@ public class Seed {
             int cordYWidth = 5;
             for (int cordX = 0; cordX <= cordXWidth; ++cordX) {
                 for (int cordY = 0; cordY <= cordYWidth; ++cordY) {
-                    if ((cordY == 0 && cordX >= 1 && cordX <= 7) || cordY == 1 || cordY == 2 || (cordY == 3 && cordX >= 2 && cordX <= 7) || (cordY == 4 && cordX >= 2 && cordX <= 6) || (cordY == 5 && cordX ==2)) {
-                        double demandFactor = random.nextInt(100) / 100.0;
-                        double accessibilityFactor = random.nextInt(100) / 100.0;
-                        double attractivenessFactor = random.nextInt(100) / 100.0;
-                        zones.add(new Zone(cordX, cordY, demandFactor, accessibilityFactor, attractivenessFactor));
-                    }
+                    double demandFactor = random.nextInt(100) / 100.0;
+                    double accessibilityFactor = random.nextInt(100) / 100.0;
+                    double attractivenessFactor = random.nextInt(100) / 100.0;
+                    zones.add(new Zone(cordX, cordY, demandFactor, accessibilityFactor, attractivenessFactor));
                 }
             }
             zoneRepository.saveAll(zones);
