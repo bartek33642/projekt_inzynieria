@@ -5,7 +5,7 @@ document.querySelector('#submitButton').addEventListener('click', () => {
     localStorage.setItem("hugeParking", document.getElementsByName('form-hugeParking')[0].checked);
     localStorage.setItem("privateParking", document.getElementsByName('form-privateParking')[0].checked);
     localStorage.setItem("electricCarParking", document.getElementsByName('form-electricCarParking')[0].checked);
-    localStorage.setItem("cordX",'');
+    localStorage.setItem("zoneCordX",'');
     localStorage.setItem("cordY",'');
     window.location.href = 'second_page.html';
 });

@@ -1,0 +1,195 @@
+//#main
+//  font-family: Arial, Helvetica, sans-serif
+//  width: 100%
+//
+//  .mapContainer
+//    display: flex
+//    flex-direction: column
+//    justify-content: flex-start
+//    align-items: flex-start
+//    //background-image: url("images/1747.jpg")
+//
+//    #mapHeaderContent
+//      height: 6vw
+//      font-size: 1.3vw
+//
+//    .canvasContainer
+//      display: flex
+//      justify-content: flex-start
+//      align-items: flex-start
+//
+//      canvas
+//        position: absolute
+//        z-index: 3
+//      // canvas size is set in .js file
+//
+//      #cityImage
+//        width: 10vw
+//        position: absolute
+//        z-index: 2
+//
+//#resultContainer
+//  justify-content: flex-start
+//  flex-wrap: wrap
+//
+//  padding: 0 2vw
+//
+//  width: 30%
+//
+//  font-family: Arial, Helvetica, sans-serif
+//  text-align: center
+//
+//  .results
+//    display: flex
+//    justify-content: flex-start
+//
+//  .header
+//    width: 100%
+//    h2
+//      font-size: 2rem
+//      margin: 0 auto 2%
+//
+//  table
+//    border: solid
+//    margin: 0
+//    background-color: #fcfcfc
+//
+//    tr td
+//      border: none
+//
+//    td
+//      text-align: center
+//
+//    .invisibleCell
+//      color: #fcfcfc
+//      border: #fcfcfc
+//
+//    .highlightedCell
+//      background-color: #00dd00
+//
+//    .bufferCell
+//      background-color: #000000
+//
+//
+//  .resultBestParking
+//    display: flex
+//    justify-content: flex-start
+//    flex-wrap: wrap
+//
+//    margin: 2vw
+//
+//    width: 55%
+//
+//    font-family: Arial, Helvetica, sans-serif
+//
+//    //text-align: center
+//
+//    #bestParkingResult
+//      margin: 0
+//      background-color: #fcfcfc
+body
+  background-image: url("../images/cba.png")
+  background-size: cover
+  color: white
+#main
+  display: flex
+  flex-wrap: wrap
+  justify-content: flex-end
+  font-family: Arial, Helvetica, sans-serif
+  #formContainer
+    width: 30vw
+    margin: 5vw
+
+  .mapContainer
+    width: 50vw
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    left: 20px
+    bottom: 20px
+    //align-self: flex-end
+  .canvasContainer
+    display: flex
+    justify-content: flex-start
+    align-items: flex-start
+
+    canvas
+      border: solid 2px
+      position: absolute
+      left: 20px
+      bottom: 20px
+      z-index: 2
+    #cityImage
+      position: absolute
+      z-index: 1
+      left: 22px
+      bottom: 22px
+
+    #mapHeader
+      height: 6vw
+      font-size: 1.3vw
+
+
+// Second page
+
+#resultContainer
+  justify-content: center
+  align-items: center
+  flex-wrap: wrap
+  padding: 5vw
+  width: 30%
+  font-family: Arial, Helvetica, sans-serif
+  height: 90vh
+  //text-align: center
+
+  .results
+    display: flex
+    justify-content: flex-start
+
+  .header
+    width: 100%
+    h2
+      font-size: 2rem
+      margin: 0 auto 2%
+
+  table
+    border: solid
+    margin: 0
+    //background-color: #fcfcfc
+
+    tr td
+      border: none
+
+    td
+      text-align: center
+
+    .invisibleCell
+      color: #fcfcfc
+      border: #fcfcfc
+
+    .highlightedCell
+      background-color: #00dd00
+
+    .bufferCell
+      background-color: #000000
+
+
+  .resultBestParking
+    display: flex
+    justify-content: flex-start
+    flex-wrap: wrap
+    margin: 2vw
+    width: 55%
+    font-family: Arial, Helvetica, sans-serif
+
+    //text-align: center
+
+    #bestParkingResult
+      margin: 0
+
+fieldset
+  background: rgba(56, 56, 56, 0.5)
+.bestParkingP
+  opacity: 1
+

@@ -2,9 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking spot recomendation system</title>
+    <link rel="stylesheet" href="styles/final_page.css">
 </head>
-<body>
 
+<body>
+<script src="scripts/final_page.js" defer></script>
+
+<div id="main">
+    <div class="canvasContainer">
+        <canvas id="mapCanvas">
+            Your browser does not support canvas element
+        </canvas>
+        <img src="images/1747.jpg" id="cityImage">
+    </div>
+    <div id="resultContainer">
+        <!--    <div class="header">-->
+        <!--        <h2>Selected parking space for you</h2>-->
+        <!--    </div>-->
+
+        <div class="resultBestParking">
+            <fieldset>
+                <p class="bestParkingP">The best car park is the parking lot <b id="bestParkingResult"></b>,</p>
+                <p>in zone <b id="bestParkingResultZone"></b></p>
+            </fieldset>
+        </div>
+        <div class="results">
+            <table id="zones">
+                <tr>
+                    <th>id</th>
+                    <th>Accessibility factor</th>
+                    <th>Attractiveness factor</th>
+                    <th>Demand factor</th>
+                </tr>
+            </table>
+
+            <table id="parkingLots">
+                <tr>
+                    <th>id</th>
+                    <th>Free spaces</th>
+                    <th>Points</th>
+                    <th>Score</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>
