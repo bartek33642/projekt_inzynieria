@@ -30,8 +30,8 @@ public class Seed {
         if (zoneRepository.count() == 0) {
             List<Zone> zones = new ArrayList<>();
             Random random = new Random();
-            int cordXWidth = 8;
-            int cordYWidth = 5;
+            int cordXWidth = 14;
+            int cordYWidth = 6;
             for (int cordX = 0; cordX <= cordXWidth; ++cordX) {
                 for (int cordY = 0; cordY <= cordYWidth; ++cordY) {
                     double demandFactor = random.nextInt(100) / 100.0;
