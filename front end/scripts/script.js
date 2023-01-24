@@ -192,6 +192,9 @@ setSelectedZoneInfo = (idOfClickedZone) => {
     selectedZoneData.id = idOfClickedZone;
     selectedZoneData.x = zone.cordX;
     selectedZoneData.y = zone.cordY;
+    localStorage.setItem("cordX",selectedZoneData.x);
+    localStorage.setItem("cordY",selectedZoneData.y);
+    window.location.href = 'final_page.html';
 }
 
 function getIdOfClickedZone(mouseX, mouseY, zonesCoords) {
